@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Rafał
- * Date: 07.01.14
- * Time: 11:33
- */
 
 namespace ClassGenerator\tests\ResourceClasses;
 

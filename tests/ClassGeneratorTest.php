@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Rafał
- * Date: 28.12.13
- * Time: 16:48
- */
 
 /** @noinspection PhpUndefinedNamespaceInspection */
 use ClassGenerator\tests\ResourceClasses;

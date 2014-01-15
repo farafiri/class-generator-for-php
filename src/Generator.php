@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Rafał
- * Date: 30.12.13
- * Time: 15:46
- */
 
 namespace ClassGenerator;
 
