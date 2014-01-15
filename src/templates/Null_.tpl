@@ -1,4 +1,4 @@
-namespace {{newClassNamespace}};
+<?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : ''; ?>
 
 class {{newClassName}} <?php
 $interfaces = '\\' . $generatorNamespace . '\\Interfaces\\Generated, \\' . $generatorNamespace . '\\Interfaces\\NullObject';

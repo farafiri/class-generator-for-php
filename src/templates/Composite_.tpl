@@ -1,4 +1,4 @@
-namespace {{newClassNamespace}};
+<?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : ''; ?>
 
 class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}\Interfaces\Composite
 {

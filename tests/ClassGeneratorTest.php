@@ -74,6 +74,15 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $nullObject->getB());
     }
 
+    public function testNullWithIteratorShouldProduceIteratorWithoutIterations()
+    {
+        $emptyIterator = new \NullIterator();
+
+        foreach($emptyIterator as $x) {
+            $this->fail("");
+        };
+    }
+
     public function testComposite()
     {
         $x1 = new ResourceClasses\X();
