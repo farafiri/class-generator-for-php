@@ -34,20 +34,57 @@ class Autoloader
         $this->cachePath = $cachePath;
         $this->enableCache = $enableCache;
         $this->generator = new Generator();
-        $this->register();
     }
 
     /**
      * @param string  $cachePath   if this path will be set with $enableCache = false then class will be saved in file
      * @param boolean $enableCache
      */
-    public function getInstance($cachePath = '', $enableCache = false)
+    public function getInstance()
     {
         if (empty(self::$instance)) {
-            self::$instance = new self($cachePath, $enableCache);
+            self::$instance = new self();
         }
 
         return self::$instance;
+    }
+
+    /**
+     * @param string $cachePath
+     *
+     * @return self
+     */
+    public function setCachePatch($cachePath)
+    {
+        $this->cachePath = $cachePath;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCachePatch()
+    {
+        return $this->cachePath;
+    }
+
+    /**
+     * @param boolean $enableCache
+     *
+     * @return self
+     */
+    public function setEnabledCache($enableCache)
+    {
+        $this->enableCache = $enableCache;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEnabledCache()
+    {
+        return $this->enableCache;
     }
 
     /**
@@ -57,6 +94,8 @@ class Autoloader
     {
         return $this->generator;
     }
+
+
 
     /**
      * @param \ClassGenerator\Generator $generator
@@ -96,9 +135,16 @@ class Autoloader
 
     /**
      * register this autoloader
+     *
+     * @return self
      */
-    protected function register()
+    public function register()
     {
-        spl_autoload_register(array($this, 'load'));
+        $f = array($this, 'load');
+        if (!in_array($f, spl_autoload_functions())) {
+            spl_autoload_register($f);
+        }
+
+        return $this;
     }
 } 

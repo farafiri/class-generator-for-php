@@ -6,7 +6,7 @@ class BaseDecoratorTest extends \PHPUnit_Framework_TestCase
 {
     static public function setUpBeforeClass()
     {
-        \ClassGenerator\Autoloader::getInstance(__DIR__ . DIRECTORY_SEPARATOR . 'cache');
+        \ClassGenerator\Autoloader::getInstance()->setCachePatch(__DIR__ . DIRECTORY_SEPARATOR . 'cache')->register();
     }
 
     public function testDecorate()

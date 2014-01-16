@@ -10,7 +10,7 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
     static public function setUpBeforeClass()
     {
-        static::$loader = \ClassGenerator\Autoloader::getInstance(__DIR__ . DIRECTORY_SEPARATOR . 'cache');
+        static::$loader = \ClassGenerator\Autoloader::getInstance()->setCachePatch(__DIR__ . DIRECTORY_SEPARATOR . 'cache')->register();
         static::$generator = static::$loader->getGenerator();
     }
 
