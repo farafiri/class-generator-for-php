@@ -642,5 +642,39 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $rp->setAccessible(true);
         $this->assertEquals(0, $rp->getValue($subject2)->count());
     }
+
+    public function testCompositeOfIteratorShouldIterateOverAllChildren()
+    {
+        $iterator1 = new ResourceClasses\Iterator(0, 1);
+        $iterator2 = new ResourceClasses\Iterator(2, 10);
+        $iterator3 = new ResourceClasses\Iterator(3, 100);
+        $iterator4 = new ResourceClasses\Iterator(0, 1000);
+        $iterator5 = new ResourceClasses\Iterator(4, 10000);
+        $composite = new ResourceClasses\CompositeIterator(array($iterator1, $iterator2, $iterator3, $iterator4, $iterator5));
+
+        $sum = 0;
+        foreach($composite as $value) {
+            $sum += $value;
+        }
+
+        $this->assertEquals(40320, $sum);
+    }
+
+    public function testCompositeOfIteratorAggregateShouldIterateOverAllChildren()
+    {
+        $iterator1 = new ResourceClasses\IteratorAggregate(0, 1);
+        $iterator2 = new ResourceClasses\IteratorAggregate(2, 10);
+        $iterator3 = new ResourceClasses\IteratorAggregate(3, 100);
+        $iterator4 = new ResourceClasses\IteratorAggregate(0, 1000);
+        $iterator5 = new ResourceClasses\IteratorAggregate(4, 10000);
+        $composite = new ResourceClasses\CompositeIteratorAggregate(array($iterator1, $iterator2, $iterator3, $iterator4, $iterator5));
+
+        $sum = 0;
+        foreach($composite as $value) {
+            $sum += $value;
+        }
+
+        $this->assertEquals(40320, $sum);
+    }
 }
 
