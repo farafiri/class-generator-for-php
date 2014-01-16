@@ -46,8 +46,13 @@ if (interface_exists($baseClass)) {
         return call_user_func_array(array($this->cgDecorated, $methodName), $arguments);
     }
 
+    public function __clone()
+    {
+        $this->cgDecorated = clone $this->cgDecorated;
+    }
+
 {{method}}
-    <?php if (in_array($methodName, array('__call'))) continue; ?>
+    <?php if (in_array($methodName, array('__call', '__clone'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

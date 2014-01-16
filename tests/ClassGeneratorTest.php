@@ -517,5 +517,57 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($weak2->cgIsReferenceEqualTo($hard));
         $this->assertFalse($weak2->cgIsReferenceEqualTo($weak));
     }
+
+    public function testCloneOnComposite()
+    {
+        $x1 = new ResourceClasses\X();
+        $composite = new ResourceClasses\CompositeX(array($x1));
+
+        $composite2 = clone $composite;
+        $composite2Children = $composite2->cgGetChildren();
+        $this->assertNotSame($x1, $composite2Children[0]);
+    }
+
+    public function testCloneOnDecorator()
+    {
+        $x1 = new ResourceClasses\X();
+        $decorator = new ResourceClasses\DecoratorForX($x1);
+
+        $decorator2 = clone $decorator;
+        $this->assertNotSame($x1, $decorator2->cgGetDecorated());
+    }
+
+    public function testCloneLazyConstructor()
+    {
+        $std = new \stdClass();
+        $x1 = new ResourceClasses\LazyConstructorX($std, $std);
+        $x2 = clone $x1;
+
+        $this->assertNotSame($x1->getA(), $x2->getA());
+        $this->assertSame($x1->getB(), $x2->getB());
+    }
+
+    public function testCloneOnReferenceMakesFromSoftHardRef()
+    {
+        $origin = new ResourceClasses\X(1, 2);
+        $hard = static::$generator->hardReference($origin);
+        $soft = $hard->cgGetWeakReference();
+
+        $softClone = clone $soft;
+        $this->assertFalse($softClone->cgIsReferenceEqualTo($soft));
+        $this->assertTrue($softClone->cgIsReferenceValid());
+        $this->assertTrue($softClone->cgIsHardReference());
+
+        $softCloneSoft = $softClone->cgGetWeakReference();
+        $this->assertTrue($softCloneSoft->cgIsReferenceValid());
+        $this->assertFalse($softCloneSoft->cgIsHardReference());
+
+        unset($hard);
+        $this->assertFalse($soft->cgIsReferenceValid());
+        $this->assertTrue($softCloneSoft->cgIsReferenceValid());
+
+        unset($softClone);
+        $this->assertFalse($softCloneSoft->cgIsReferenceValid());
+    }
 }
 

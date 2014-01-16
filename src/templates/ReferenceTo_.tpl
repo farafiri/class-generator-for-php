@@ -148,7 +148,18 @@ if (interface_exists($baseClass)) {
         }
     }
 
+    function __clone()
+    {
+        if ($this->cgIsReferenceValid) {
+            $this->cgReferencedObject = clone $this->cgReferencedObject;
+            $this->cgIsHardReference = true;
+            $hash = spl_object_hash($this->cgReferencedObject);
+            self::$cgReferencesCounter[$hash] = 1;
+        }
+    }
+
     {{method}}
+    <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

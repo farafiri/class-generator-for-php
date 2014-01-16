@@ -32,6 +32,7 @@ if (interface_exists($baseClass)) {
     }
 
     {{method}}
+    <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

@@ -44,4 +44,11 @@ class X
     {
         return new self($this->getA() + $this->getB(), $this->getA() - $this->getB());
     }
+
+    public function __clone()
+    {
+        if (is_object($this->a)) {
+            $this->a = clone $this->a;
+        }
+    }
 } 

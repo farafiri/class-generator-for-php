@@ -112,7 +112,15 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
         return new $compositeClassName($children);
     }
 
+    public function __clone()
+    {
+        foreach($this->cgChildren as &$child) {
+            $child = clone $child;
+        }
+    }
+
     {{method}}
+    <?php if (in_array($methodName, array('__clone'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

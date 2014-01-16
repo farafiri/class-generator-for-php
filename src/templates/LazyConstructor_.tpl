@@ -29,7 +29,18 @@ if ($parametersDefinition === null) {
         }
     }
 
+    public function __clone()
+    {
+        if ($this->cgConstructorParams !== null) {
+            call_user_func_array(array($this, '__construct'), $this->cgConstructorParams);
+        }
+        <?php if (method_exists($baseClass, '__clone')) { ?>
+        parent::__clone();
+        <?php } ?>
+    }
+
 {{method}}
+    <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {
