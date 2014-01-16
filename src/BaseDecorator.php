@@ -59,4 +59,11 @@ abstract class BaseDecorator implements Interfaces\Decorator
     {
         unset($this->cgDecorated->$name);
     }
+
+    public function __clone()
+    {
+        if (is_object($this->cgDecorated)) {
+            $this->cgDecorated = clone $this->cgDecorated;
+        }
+    }
 } 
