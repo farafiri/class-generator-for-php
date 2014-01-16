@@ -51,8 +51,19 @@ if (interface_exists($baseClass)) {
         $this->cgDecorated = clone $this->cgDecorated;
     }
 
+    public function __sleep()
+    {
+        return array('cgDecorated');
+    }
+
+    <?php if (method_exists($baseClass, '__wakeup')) { ?>
+    public function __wakeup()
+    {
+    }
+    <?php } ?>
+
 {{method}}
-    <?php if (in_array($methodName, array('__call', '__clone'))) continue; ?>
+    <?php if (in_array($methodName, array('__call', '__clone', '__sleep', '__wakeup'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

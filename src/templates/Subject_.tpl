@@ -59,8 +59,23 @@ if (interface_exists($baseClass)) {
     }
 <?php } ?>
 
+    <?php if (!method_exists($baseClass, '__sleep')) { ?>
+    public function __sleep()
+    {
+        return array_diff(array_keys(get_object_vars($this)), array('cgObservers'));
+    }
+    <?php } ?>
+
+    public function __wakeup()
+    {
+        $this->cgObservers = new \SplObjectStorage();
+        <?php if (method_exists($baseClass, '__wakeup')) { ?>
+        parent::__wakeup();
+        <?php } ?>
+    }
+
     {{method}}
-<?php if (in_array($methodName, array('notify', 'attach', 'detach', '__toString', '__get'))) continue; ?>
+<?php if (in_array($methodName, array('notify', 'attach', 'detach', '__toString', '__get', '__wakeup', '__sleep'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

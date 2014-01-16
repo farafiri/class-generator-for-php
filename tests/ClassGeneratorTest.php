@@ -526,6 +526,7 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $composite2 = clone $composite;
         $composite2Children = $composite2->cgGetChildren();
         $this->assertNotSame($x1, $composite2Children[0]);
+        $this->assertEquals($x1, $composite2Children[0]);
     }
 
     public function testCloneOnDecorator()
@@ -535,6 +536,7 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $decorator2 = clone $decorator;
         $this->assertNotSame($x1, $decorator2->cgGetDecorated());
+        $this->assertEquals($x1, $decorator2->cgGetDecorated());
     }
 
     public function testCloneLazyConstructor()
@@ -544,6 +546,7 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $x2 = clone $x1;
 
         $this->assertNotSame($x1->getA(), $x2->getA());
+        $this->assertEquals($x1->getA(), $x2->getA());
         $this->assertSame($x1->getB(), $x2->getB());
     }
 
@@ -559,6 +562,7 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($softClone->cgIsHardReference());
 
         $softCloneSoft = $softClone->cgGetWeakReference();
+        $this->assertEquals($soft, $softCloneSoft);
         $this->assertTrue($softCloneSoft->cgIsReferenceValid());
         $this->assertFalse($softCloneSoft->cgIsHardReference());
 
@@ -568,6 +572,75 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         unset($softClone);
         $this->assertFalse($softCloneSoft->cgIsReferenceValid());
+    }
+
+    public function testSleepWakeupOnComposite()
+    {
+        $composite1 = new ResourceClasses\CompositeX(array(new ResourceClasses\X()));
+        $composite2 = unserialize(serialize($composite1));
+
+        $this->assertEquals($composite1, $composite2);
+    }
+
+    public function testSleepWakeupOnDecorator()
+    {
+        $decorator1 = new ResourceClasses\DecoratorForX(new ResourceClasses\X());
+        $decorator2 = unserialize(serialize($decorator1));
+
+        $this->assertEquals($decorator1, $decorator2);
+    }
+
+    public function testSleepWakeupLazyConstructor()
+    {
+        $x1 = new ResourceClasses\LazyConstructorX(new \stdClass(), 4);
+        $x2 = unserialize(serialize($x1));
+
+        $this->assertEquals($x1, $x2);
+    }
+
+    public function testSleepWakeupOnReferenceMakesFromSoftHardRef()
+    {
+        $origin = new ResourceClasses\X(1, 2);
+        $hard = static::$generator->hardReference($origin);
+        $soft = $hard->cgGetWeakReference();
+
+        $unserialized = unserialize(serialize($soft));
+        $this->assertTrue($unserialized->cgIsReferenceValid());
+        $this->assertTrue($unserialized->cgIsHardReference());
+
+        $unserializedSoft = $unserialized->cgGetWeakReference();
+        $this->assertTrue($unserializedSoft->cgIsReferenceValid());
+        $this->assertFalse($unserializedSoft->cgIsHardReference());
+        $this->assertEquals($soft, $unserializedSoft);
+
+        unset($unserialized);
+
+        $this->assertFalse($unserializedSoft->cgIsReferenceValid());
+    }
+
+    public function testSleepWakeupOnLazy()
+    {
+        $x = static::$generator->lazyMethods(new ResourceClasses\X(101, 102));
+        $x2 = unserialize(serialize($x));
+
+        $this->assertEquals(101, $x2->getA());
+        $this->assertEquals(102, $x2->getB());
+    }
+
+    public function testSleepWakeupOnSubject()
+    {
+        $observer1 = new ResourceClasses\Observer();
+        $subject1 = new ResourceClasses\SubjectX(201, 202);
+        $subject1->attach($observer1);
+
+        $subject2 = unserialize(serialize($subject1));
+
+        $this->assertEquals(201, $subject2->getA());
+        $this->assertEquals(202, $subject2->getB());
+
+        $rp = new \ReflectionProperty('ClassGenerator\tests\ResourceClasses\SubjectX', 'cgObservers');
+        $rp->setAccessible(true);
+        $this->assertEquals(0, $rp->getValue($subject2)->count());
     }
 }
 

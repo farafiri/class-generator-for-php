@@ -57,7 +57,7 @@ if (interface_exists($baseClass)) {
         if ($lazyProxyCreator) {
             $this->cgLazyProxyCreator = $lazyProxyCreator;
         } else {
-            $this->cgLazyProxyCreator = new \ClassGenerator\Generator();
+            $this->cgLazyProxyCreator = \ClassGenerator\Generator::getInstance();
         }
 
         $this->cgLazyProxySettings = static::$defaultLazyProxySettings;
@@ -83,8 +83,22 @@ if (interface_exists($baseClass)) {
         }
     }
 
+    public function __sleep()
+    {
+        if ($this->cgProxifiedObject === null) {
+            $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+        }
+
+        return array('cgProxifiedObject', 'cgLazyProxySettings', 'cgLazyMethods');
+    }
+
+    public function __wakeup()
+    {
+        $this->cgLazyProxyCreator = \ClassGenerator\Generator::getInstance();
+    }
+
     {{method}}
-    <?php if (in_array($methodName, array("__clone", "cgGetProxifiedObject"))) continue; ?>
+    <?php if (in_array($methodName, array("__clone", "cgGetProxifiedObject", "__sleep", "__wakeup"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

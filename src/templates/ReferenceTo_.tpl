@@ -158,6 +158,21 @@ if (interface_exists($baseClass)) {
         }
     }
 
+    public function __sleep()
+    {
+        return array('cgReferencedObject', 'cgIsReferenceValid');
+    }
+
+    public function __wakeup()
+    {
+        if ($this->cgIsReferenceValid) {
+            $this->cgIsHardReference = true;
+            self::$cgReferencesCounter[spl_object_hash($this->cgReferencedObject)] = 1;
+        } else {
+            $this->cgIsHardReference = false;
+        }
+    }
+
     {{method}}
     <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}

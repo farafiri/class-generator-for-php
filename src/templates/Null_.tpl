@@ -19,6 +19,17 @@ if (interface_exists($baseClass)) {
     {
     }
 
+    public function __sleep()
+    {
+        return array('');
+    }
+
+    <?php if (method_exists($baseClass, '__wakeup')) { ?>
+    public function __wakeup()
+    {
+    }
+    <?php } ?>
+
 {{method}}
     <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
