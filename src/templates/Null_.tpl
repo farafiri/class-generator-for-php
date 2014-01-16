@@ -43,7 +43,7 @@ if (interface_exists($baseClass)) {
                 echo "null";
             } elseif (preg_match('/(^|\|)null($|\|)/', $type)) {
                 echo "null";
-            } elseif (preg_match('/(^|\|)(array|\[\])($|\|)/', $type)) {
+            } elseif (preg_match('/((^|\|)array|\\[\\])($|\|)/', $type)) {
                 echo "array()";
             } elseif (preg_match('/(^|\|)string($|\|)/', $type)) {
                 echo "''";

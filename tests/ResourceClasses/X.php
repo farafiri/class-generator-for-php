@@ -45,6 +45,14 @@ class X
         return new self($this->getA() + $this->getB(), $this->getA() - $this->getB());
     }
 
+    /**
+     * @return int[]
+     */
+    public function getRangeToB()
+    {
+        return range(1, $this->getB());
+    }
+
     public function __clone()
     {
         if (is_object($this->a)) {
