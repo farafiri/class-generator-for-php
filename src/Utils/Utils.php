@@ -26,6 +26,41 @@ class Utils {
         return null;
     }
 
+    public static function returnsArrayOrNull(\ReflectionMethod $reflectionMethod)
+    {
+        $type = static::getReturnType($reflectionMethod);
+        $type = preg_replace('/\([^)]\)/', 'mixed', $type);
+        $types = explode('|', $type);
+        $result = false;
+        foreach($types as $subtype) {
+            if ($subtype === 'array' || substr($subtype, -2) === '[]') {
+                $result = true;
+            } elseif ($subtype !== 'null') {
+                return false;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param \ReflectionMethod $reflectionMethod
+     * @param boolean           $canReturnNull
+     *
+     * @return string|null
+     */
+    public static function returnedObjectClassName(\ReflectionMethod $reflectionMethod, $canReturnNull = false)
+    {
+        $type = static::getReturnType($reflectionMethod);
+        if (preg_match('/^\\\\([A-Za-z0-9_\\\\]+)$/', $type, $match)) {
+            return $match[1];
+        }elseif ($canReturnNull && preg_match('/^(null\|)?\\\\([A-Za-z0-9_\\\\]+)(\|null)?$/', $type, $match)) {
+            return $match[2];
+        };
+
+        return null;
+    }
+
     public static function getMethodLazyOptions(\ReflectionMethod $reflectionMethod)
     {
         $returnType = static::getReturnType($reflectionMethod);

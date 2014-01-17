@@ -676,5 +676,31 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(40320, $sum);
     }
+
+    public function testCompositeIfMethodReturnsArrayThenCompositeShouldReturnMergedArray()
+    {
+        $x1 = new ResourceClasses\X(1, 2);
+        $x2 = new ResourceClasses\X(3, 4);
+        $x3 = new ResourceClasses\X(5, 6);
+        $composite = new ResourceClasses\CompositeX(array($x1, $x2, $x3));
+
+        $this->assertEquals(array(1, 2, 1, 2, 3, 4, 1, 2, 3, 4, 5, 6), $composite->getRangeToB());
+    }
+
+    public function testCompositeIfMethodReturnsObjectThenCompositeShouldBeReturned()
+    {
+        $x1 = new ResourceClasses\X(1, 2);
+        $x2 = new ResourceClasses\X(3, 4);
+        $x3 = new ResourceClasses\X(5, 6);
+        $composite = new ResourceClasses\CompositeX(array($x1, $x2, $x3));
+
+        $resultOfCreateAnotherX = $composite->createAnotherX();
+        $this->assertTrue($resultOfCreateAnotherX instanceof ResourceClasses\CompositeX);
+        $this->assertEquals(array(
+            new ResourceClasses\X(3, -1),
+            new ResourceClasses\X(7, -1),
+            new ResourceClasses\X(11, -1),
+        ), $resultOfCreateAnotherX->cgGetChildren());
+    }
 }
 
