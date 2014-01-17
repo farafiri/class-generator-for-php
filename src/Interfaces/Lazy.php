@@ -3,6 +3,7 @@
 namespace ClassGenerator\Interfaces;
 
 
-interface Lazy {
+interface Lazy extends Proxy
+{
 
 } 

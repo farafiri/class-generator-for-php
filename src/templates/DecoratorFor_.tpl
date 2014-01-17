@@ -30,6 +30,14 @@ if (interface_exists($baseClass)) {
     }
 
     /**
+     * @return object
+     */
+    public function cgGetProxifiedObject()
+    {
+        return $this->cgDecorated;
+    }
+
+    /**
      * @param \{{baseClass}}|\ClassGenerator\BaseDecorator $decorated
      */
     public function cgSetDecorated($decorated)

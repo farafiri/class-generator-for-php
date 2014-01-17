@@ -44,6 +44,14 @@ if (interface_exists($baseClass)) {
     }
 
     /**
+     * @return \{{baseClass}}|null
+     */
+    public function cgGetProxifiedObject()
+    {
+        return $this->cgReferencedObject;
+    }
+
+    /**
      * @return boolean
      */
     public function cgIsHardReference()

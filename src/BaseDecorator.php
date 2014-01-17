@@ -10,16 +10,35 @@ abstract class BaseDecorator implements Interfaces\Decorator
      */
     protected $cgDecorated;
 
+    /**
+     * @param object $decorated
+     */
     public function cgSetDecorated($decorated)
     {
         $this->cgDecorated = $decorated;
     }
 
+    /**
+     * @return object|null
+     */
     public function cgGetDecorated()
     {
         return $this->cgDecorated;
     }
 
+    /**
+     * @return object|null
+     */
+    public function cgGetProxifiedObject()
+    {
+        return $this->cgDecorated;
+    }
+
+    /**
+     * @param object $object
+     *
+     * @return object
+     */
     public function cgDecorate($object)
     {
         if ($object instanceof Interfaces\Decorator) {
