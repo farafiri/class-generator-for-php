@@ -9,4 +9,4 @@ class ToNumberDecorator extends \ClassGenerator\BaseDecorator
     {
         return (integer) $this->getA() + (integer) $this->getB();
     }
-} 
+}

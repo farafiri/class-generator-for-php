@@ -96,4 +96,4 @@ class TemplateClassCodeGenerator
 
         return implode(',', $parameters);
     }
-} 
+}

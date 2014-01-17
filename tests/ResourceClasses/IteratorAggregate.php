@@ -23,4 +23,4 @@ class IteratorAggregate implements \IteratorAggregate{
     {
         return new Iterator($this->repetitions, $this->value);
     }
-} 
+}

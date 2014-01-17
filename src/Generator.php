@@ -83,4 +83,4 @@ class Generator {
         $referenceClassName = $this->generators['reference']->getClassName(get_class($object));
         return new $referenceClassName($object);
     }
-} 
+}

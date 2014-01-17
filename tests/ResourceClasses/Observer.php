@@ -11,4 +11,4 @@ class Observer implements \SplObserver
     {
         $this->updates[] = $subject->getA() . ',' . $subject->getB();
     }
-} 
+}

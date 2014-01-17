@@ -9,4 +9,4 @@ interface Proxy
      * @return object|null
      */
     public function cgGetProxifiedObject();
-} 
+}

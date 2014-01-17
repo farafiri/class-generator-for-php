@@ -24,4 +24,4 @@ class X2 extends X
     {
         return new self($this->getA() + $this->getB(), $this->getA() - $this->getB());
     }
-} 
+}

@@ -38,4 +38,4 @@ interface Reference extends Proxy
      * @return boolean
      */
     public function cgIsReferenceEqualTo($object);
-} 
+}

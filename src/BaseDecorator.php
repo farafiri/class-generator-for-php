@@ -85,4 +85,4 @@ abstract class BaseDecorator implements Interfaces\Decorator
             $this->cgDecorated = clone $this->cgDecorated;
         }
     }
-} 
+}

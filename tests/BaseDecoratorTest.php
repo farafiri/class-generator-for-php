@@ -22,4 +22,4 @@ class BaseDecoratorTest extends \PHPUnit_Framework_TestCase
         $decorated->setA(10);
         $this->assertEquals(12, $decorated->toNumber());
     }
-} 
+}

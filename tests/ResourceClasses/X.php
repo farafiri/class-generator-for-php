@@ -59,4 +59,4 @@ class X
             $this->a = clone $this->a;
         }
     }
-} 
+}

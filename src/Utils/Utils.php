@@ -94,4 +94,4 @@ class Utils {
 
         static::$defaultMethodLazyOptions;
     }
-} 
+}

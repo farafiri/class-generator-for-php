@@ -3,6 +3,7 @@
 namespace ClassGenerator\Interfaces;
 
 
-interface NullObject {
+interface NullObject
+{
 
-} 
+}

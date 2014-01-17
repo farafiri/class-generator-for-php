@@ -16,4 +16,4 @@ class XY extends X
     {
         $this->c = $c;
     }
-} 
+}

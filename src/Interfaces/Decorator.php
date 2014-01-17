@@ -14,4 +14,4 @@ interface Decorator extends Proxy
      * @param object $decorated
      */
     public function cgSetDecorated($decorated);
-} 
+}

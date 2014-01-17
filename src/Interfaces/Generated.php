@@ -2,6 +2,6 @@
 
 namespace ClassGenerator\Interfaces;
 
-interface Generated {
-
+interface Generated
+{
 }

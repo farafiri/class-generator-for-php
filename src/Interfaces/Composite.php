@@ -26,4 +26,4 @@ interface Composite
      * @return object[] collection of removed elements
      */
     public function cgRemoveChildren($children);
-} 
+}
