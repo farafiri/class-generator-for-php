@@ -106,6 +106,10 @@ if (interface_exists($baseClass)) {
             $closure = function () <?php echo $parameters ? "use ($parameters) " : ""; ?> {
                 if ($this->cgProxifiedObject === null) {
                     $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+
+                    if (!(is_object($this->cgProxifiedObject) && $this->cgProxifiedObject instanceof \{{baseClass}})) {
+                        throw new \ClassGenerator\Exceptions\Proxy('Proxy is not instanceof \{{baseClass}}');
+                    }
                 }
 
                 return $this->cgProxifiedObject->{{methodName}}({{parameters}});
@@ -116,6 +120,10 @@ if (interface_exists($baseClass)) {
 
         if ($this->cgProxifiedObject === null) {
             $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+
+            if (!(is_object($this->cgProxifiedObject) && $this->cgProxifiedObject instanceof \{{baseClass}})) {
+                throw new \ClassGenerator\Exceptions\Proxy('Proxy is not instanceof \{{baseClass}}');
+            }
         }
 
         if ($this->cgLazyMethods && $this->cgLazyProxySettings['{{methodName}}']['isLazyMethods']) {

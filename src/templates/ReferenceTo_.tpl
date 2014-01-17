@@ -91,6 +91,10 @@ if (interface_exists($baseClass)) {
      */
     public function cgGetWeakReference()
     {
+        if (!$this->cgIsReferenceValid) {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to call cgGetWeakReference on invalid reference");
+        }
+
         $reference = new self($this->cgReferencedObject);
         $reference->cgSetIsHardReference(false);
         return $reference;
@@ -101,6 +105,10 @@ if (interface_exists($baseClass)) {
      */
     public function cgGetHardReference()
     {
+        if (!$this->cgIsReferenceValid) {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to call cgGetHardReference on invalid reference");
+        }
+
         $reference = new self($this->cgReferencedObject);
         return $reference;
     }
@@ -112,6 +120,10 @@ if (interface_exists($baseClass)) {
      */
     public function cgSetIsHardReference($isHardReference)
     {
+        if (!$this->cgIsReferenceValid) {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to call cgSetIsHardReference on invalid reference");
+        }
+
         $isHardReference = (bool) $isHardReference;
         if ($isHardReference === $this->cgIsHardReference) {
             return ;
@@ -139,7 +151,7 @@ if (interface_exists($baseClass)) {
     public function cgIsReferenceEqualTo($object)
     {
         if (!$this->cgIsReferenceValid) {
-            return false;
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to call cgIsReferenceEqualTo on invalid reference");
         }
 
         if ($object instanceof \ClassGenerator\Interfaces\Reference) {
@@ -163,6 +175,8 @@ if (interface_exists($baseClass)) {
             $this->cgIsHardReference = true;
             $hash = spl_object_hash($this->cgReferencedObject);
             self::$cgReferencesCounter[$hash] = 1;
+        } else {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to clone invalid reference");
         }
     }
 
@@ -186,6 +200,10 @@ if (interface_exists($baseClass)) {
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {
+        if (!$this->cgReferencedObject) {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to call {{methodName}} on invalid reference");
+        }
+
         return $this->cgReferencedObject->{{methodName}}({{parameters}});
     }
 

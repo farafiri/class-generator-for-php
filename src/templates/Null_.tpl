@@ -61,7 +61,7 @@ if (interface_exists($baseClass)) {
                 if (substr($match[0], 0, 1) === '\\') {
                     $returnClass = substr($match[0], 1);
                 } else {
-                    throw new \Exception("phpDoc return for $baseClass::$methodName must be full class name");
+                    throw new \ClassGenerator\Exceptions\Generate("phpDoc return for $baseClass::$methodName must be full class name");
                 }
                 echo "new \\" . $generator->getClassName($returnClass) . "()";
             } else {

@@ -702,4 +702,15 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
             new ResourceClasses\X(11, -1),
         ), $resultOfCreateAnotherX->cgGetChildren());
     }
+
+    public function testInvalidReferenceThrowsErrorOnAttemptToUse()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+        unset($hard);
+        gc_collect_cycles();
+
+        $this->setExpectedException('ClassGenerator\Exceptions\Proxy');
+        $weak->getA();
+    }
 }

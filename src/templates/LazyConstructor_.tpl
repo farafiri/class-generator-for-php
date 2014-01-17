@@ -3,12 +3,12 @@
 class {{newClassName}} <?php
 $interfaces = '\\' . $generatorNamespace . '\\Interfaces\\Generated';
 if (interface_exists($baseClass)) {
-    throw new \Exception("LazyConstructor classes can be created only on class, $baseClass is an interface");
+    throw new \ClassGenerator\Exceptions\Generate("LazyConstructor classes can be created only on class, $baseClass is an interface");
 } else {
     echo 'extends \\' . $baseClass . ' implements ' . $interfaces;
 };
 if ($parametersDefinition === null) {
-    throw new \Exception("LazyConstructor classes can be created only on class with constructor, $baseClass::__construct is not defined");
+    throw new \ClassGenerator\Exceptions\Generate("LazyConstructor classes can be created only on class with constructor, $baseClass::__construct is not defined");
 }
 
  ?>
