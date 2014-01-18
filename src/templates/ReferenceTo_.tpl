@@ -41,6 +41,11 @@ if (interface_exists($baseClass)) {
     protected $cgBehaveLikeNullObject = false;
 
     /**
+     *
+     */
+    protected $cgReleaseEvents = array();
+
+    /**
      * @param \{{baseClass}} $object
      */
     public function __construct($object)
@@ -75,6 +80,24 @@ if (interface_exists($baseClass)) {
     }
 
     /**
+     * @param callable $event
+     */
+    public function cgAddReleaseEvent($event) {
+        $this->cgReleaseEvents[] = $event;
+    }
+
+    /**
+     * @param callable $event
+     */
+    public function cgRemoveReleaseEvent($eventToRemove) {
+        foreach($this->cgReleaseEvents as $key => $event) {
+            if ($event === $eventToRemove) {
+                unset($this->cgReleaseEvents[$key]);
+            }
+        }
+    }
+
+    /**
      * @param boolean $behaveLikeNullObject
      */
     public function cgSetBehaveLikeNullObject($behaveLikeNullObject)
@@ -99,6 +122,10 @@ if (interface_exists($baseClass)) {
 
     public function cgRelease()
     {
+        foreach($this->cgReleaseEvents as $event) {
+            call_user_func($event, $this);
+        };
+
         $this->cgReferencedObject = null;
         $this->cgIsReferenceValid = false;
         if ($this->cgBehaveLikeNullObject) {

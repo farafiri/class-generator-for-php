@@ -765,4 +765,41 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('ClassGenerator\Exceptions\Proxy');
         $weak->cgGetWeakReference();
     }
+
+    public function testReferenceAddReleaseEvent()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+
+        $releaseEvent = function($reference) use (&$weakReferences) {
+            unset($weakReferences[$reference->getA()]);
+        };
+
+        $weakReferences[$weak->getA()] = $weak;
+        $weak->cgAddReleaseEvent($releaseEvent);
+
+        $this->assertTrue(isset($weakReferences[1]));
+        unset($hard);
+
+        $this->assertTrue(empty($weakReferences[1]));
+    }
+
+    public function testReferenceRemoveReleaseEvent()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+
+        $releaseEvent = function($reference) use (&$weakReferences) {
+            unset($weakReferences[$reference->getA()]);
+        };
+
+        $weakReferences[$weak->getA()] = $weak;
+        $weak->cgAddReleaseEvent($releaseEvent);
+        $weak->cgRemoveReleaseEvent($releaseEvent);
+
+        $this->assertTrue(isset($weakReferences[1]));
+        unset($hard);
+
+        $this->assertTrue(isset($weakReferences[1]));
+    }
 }
