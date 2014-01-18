@@ -713,4 +713,56 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('ClassGenerator\Exceptions\Proxy');
         $weak->getA();
     }
+
+    public function testInvalidReferenceMayBehaveLikeNullObject()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+        $weak->cgSetBehaveLikeNullObject(true);
+        unset($hard);
+        gc_collect_cycles();
+
+        $this->assertNull($weak->getA());
+        $this->assertEquals(0, $weak->getB());
+    }
+
+    public function testInvalidReferenceMayBehaveLikeNullObjectCheckWithClone()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+        $weak->cgSetBehaveLikeNullObject(true);
+        unset($hard);
+        gc_collect_cycles();
+
+        $cloneOfWeak = clone $weak;
+
+        $this->assertNull($cloneOfWeak->getA());
+        $this->assertEquals(0, $cloneOfWeak->getB());
+    }
+
+    public function testInvalidReferenceMayBehaveLikeNullObjectCheckWithSerialize()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+        $weak->cgSetBehaveLikeNullObject(true);
+        unset($hard);
+        gc_collect_cycles();
+
+        $serializedWeak = unserialize(serialize($weak));
+
+        $this->assertNull($serializedWeak->getA());
+        $this->assertEquals(0, $serializedWeak->getB());
+    }
+
+    public function testEvenIfReferenceBehaveLikeNullObjectIsSetStillThrowErrorOnAttemptOfGetReference()
+    {
+        $hard = static::$generator->hardReference(new ResourceClasses\X(1, 2));
+        $weak = $hard->cgGetWeakReference();
+        $weak->cgSetBehaveLikeNullObject(true);
+        unset($hard);
+        gc_collect_cycles();
+
+        $this->setExpectedException('ClassGenerator\Exceptions\Proxy');
+        $weak->cgGetWeakReference();
+    }
 }

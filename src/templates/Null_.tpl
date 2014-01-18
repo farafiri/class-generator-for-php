@@ -21,7 +21,7 @@ if (interface_exists($baseClass)) {
 
     public function __sleep()
     {
-        return array('');
+        return array();
     }
 
     <?php if (method_exists($baseClass, '__wakeup')) { ?>

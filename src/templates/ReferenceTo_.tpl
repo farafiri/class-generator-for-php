@@ -1,5 +1,7 @@
 <?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : ''; ?>
 
+<?php $nullObjectClassName = $generator->getGeneratorAggregator()->getNewClassNameFor($baseClass, 'nullObject'); ?>
+
 class {{newClassName}} <?php
 $interfaces = '\\' . $generatorNamespace . '\\Interfaces\\Generated, \\' . $generatorNamespace . '\\Interfaces\\Reference';
 if (interface_exists($baseClass)) {
@@ -32,6 +34,11 @@ if (interface_exists($baseClass)) {
      * @var boolean
      */
     protected $cgIsReferenceValid = true;
+
+    /**
+     * @var boolean
+     */
+    protected $cgBehaveLikeNullObject = false;
 
     /**
      * @param \{{baseClass}} $object
@@ -68,6 +75,38 @@ if (interface_exists($baseClass)) {
     }
 
     /**
+     * @param boolean $behaveLikeNullObject
+     */
+    public function cgSetBehaveLikeNullObject($behaveLikeNullObject)
+    {
+        $this->cgBehaveLikeNullObject = $behaveLikeNullObject;
+        if (!$this->cgIsReferenceValid) {
+            if ($behaveLikeNullObject) {
+                $this->cgReferencedObject = new \{{nullObjectClassName}}();
+            } else {
+                $this->cgReferencedObject = null;
+            }
+        }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function cgGetBehaveLikeNullObject()
+    {
+        return $this->cgBehaveLikeNullObject;
+    }
+
+    public function cgRelease()
+    {
+        $this->cgReferencedObject = null;
+        $this->cgIsReferenceValid = false;
+        if ($this->cgBehaveLikeNullObject) {
+            $this->cgReferencedObject = new \{{nullObjectClassName}}();
+        }
+    }
+
+    /**
      * decrease reference counter and if it reach 0 then relase object and make soft references invalid
      *
      * @param string $hash
@@ -78,8 +117,7 @@ if (interface_exists($baseClass)) {
             unset(self::$cgReferencesCounter[$hash]);
             if (isset(self::$cgSoftReferences[$hash])) {
                 foreach(self::$cgSoftReferences[$hash] as $softReference) {
-                    $softReference->cgReferencedObject = null;
-                    $softReference->cgIsReferenceValid = false;
+                    $softReference->cgRelease();
                 }
                 unset(self::$cgSoftReferences[$hash]);
             }
@@ -170,7 +208,7 @@ if (interface_exists($baseClass)) {
 
     function __clone()
     {
-        if ($this->cgIsReferenceValid) {
+        if ($this->cgReferencedObject) {
             $this->cgReferencedObject = clone $this->cgReferencedObject;
             $this->cgIsHardReference = true;
             $hash = spl_object_hash($this->cgReferencedObject);
@@ -182,7 +220,11 @@ if (interface_exists($baseClass)) {
 
     public function __sleep()
     {
-        return array('cgReferencedObject', 'cgIsReferenceValid');
+        if (!$this->cgReferencedObject) {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to serialize invalid reference");
+        }
+
+        return array('cgReferencedObject', 'cgIsReferenceValid', 'cgBehaveLikeNullObject');
     }
 
     public function __wakeup()

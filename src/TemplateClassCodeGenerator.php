@@ -6,11 +6,7 @@ class TemplateClassCodeGenerator
 {
     public function generate($newClass, $baseClass, $template, $extraData = array())
     {
-        if (!isset($extraData['addedPrefix'])) {
-            $extraData['addedPrefix'] = '';
-        }
         extract($extraData);
-        //echo "\ngenerate $newClass from $baseClass\n";
         $explodedNewClass = explode('\\', $newClass);
         $newClassName = array_pop($explodedNewClass);
         $newClassNamespace = implode('\\', $explodedNewClass);

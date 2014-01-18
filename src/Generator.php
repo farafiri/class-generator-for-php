@@ -21,6 +21,10 @@ class Generator {
             'decorator' => new SimpleClassGenerator('DecoratorFor*', $templateClassCodeGenerator),
             'composite' =>  new SimpleClassGenerator('Composite*', $templateClassCodeGenerator),
         );
+
+        foreach($this->generators as $generator) {
+            $generator->setGeneratorAggregator($this);
+        }
     }
 
     public static function getInstance()
@@ -50,15 +54,6 @@ class Generator {
                 return $code;
             }
         }
-    }
-
-    public function getNullObjectClassName($baseClassName)
-    {
-        if (is_object($baseClassName)) {
-            $baseClassName = get_class($baseClassName);
-        }
-
-        $this->generators['nullObject']->getClassName($baseClassName);
     }
 
     public function getNewClassNameFor($className, $generatorName)

@@ -9,6 +9,7 @@ class SimpleClassGenerator
     protected $regexPatterns = null;
     protected $templateClassGenerator;
     protected $template = null;
+    protected $generatorAggregator = null;
 
     public function __construct($classNamePattern, $templateClassGenerator)
     {
@@ -46,6 +47,16 @@ class SimpleClassGenerator
         }
 
         return $this->template;
+    }
+
+    public function setGeneratorAggregator($aggregator)
+    {
+        $this->generatorAggregator = $aggregator;
+    }
+
+    public function getGeneratorAggregator()
+    {
+        return $this->generatorAggregator;
     }
 
     /**
