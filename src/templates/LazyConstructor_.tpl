@@ -39,7 +39,18 @@ if ($parametersDefinition === null) {
         <?php } ?>
     }
 
+    <?php if (in_array('Serializable', class_implements($baseClass))) { ?>
+    function serialize() {
+        if ($this->cgConstructorParams !== null) {
+            call_user_func_array(array($this, '__construct'), $this->cgConstructorParams);
+        }
+
+        return parent::serialize();
+    }
+    <?php } ?>
+
 {{method}}
+    <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize'))) continue; ?>
     <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})

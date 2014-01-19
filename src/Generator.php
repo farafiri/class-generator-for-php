@@ -61,7 +61,7 @@ class Generator {
         return $this->generators[$generatorName]->getClassName($className);
     }
 
-    public function lazy($closure, $className, $lazyMethods)
+    public function lazy($closure, $className, $lazyMethods = true)
     {
         $lazyClassName = $this->generators['lazy']->getClassName($className);
         return new $lazyClassName($closure, $this, $lazyMethods);

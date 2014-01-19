@@ -74,7 +74,15 @@ if (interface_exists($baseClass)) {
         <?php } ?>
     }
 
+    <?php if (in_array('Serializable', class_implements($baseClass))) { ?>
+    function unserialize($data) {
+        $this->cgObservers = new \SplObjectStorage();
+        parent::unserialize($data);
+    }
+    <?php } ?>
+
     {{method}}
+<?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
 <?php if (in_array($methodName, array('notify', 'attach', 'detach', '__toString', '__get', '__wakeup', '__sleep'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})

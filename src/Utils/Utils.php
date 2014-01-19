@@ -23,6 +23,10 @@ class Utils {
             return $matches[1];
         }
 
+        if ($reflectionMethod->getName() === 'serialize' || $reflectionMethod->getName() === '__toString') {
+            return 'string';
+        }
+
         return null;
     }
 

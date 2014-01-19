@@ -182,8 +182,19 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
 
     <?php } ?>
 
+    <?php if (in_array('Serializable', class_implements($baseClass))) { ?>
+    function serialize() {
+        return serialize($this->cgChildren);
+    }
+
+    function unserialize($data) {
+        return $this->cgChildren = unserialize($data);
+    }
+    <?php } ?>
+
 
     {{method}}
+    <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
     <?php if (in_array('IteratorAggregate', class_implements($baseClass)) && in_array($methodName, array('getIterator'))) continue; ?>
     <?php if (in_array('OuterIterator', class_implements($baseClass)) && in_array($methodName, array('getInnerIterator'))) continue; ?>
     <?php if (in_array('RecursiveIterator', class_implements($baseClass)) && in_array($methodName, array('getChildren', 'hasChildren'))) continue; ?>

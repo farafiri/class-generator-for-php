@@ -802,4 +802,65 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(isset($weakReferences[1]));
     }
+
+    public function testSerializeWithNullObject()
+    {
+        $x = new ResourceClasses\NullSerialize(1, 2);
+
+        $this->assertEquals($x, unserialize(serialize($x)));
+    }
+
+    public function testSerializeWithComposite()
+    {
+        $x1 = new ResourceClasses\Serialize(1, 2);
+        $x2 = new ResourceClasses\Serialize(3, 4);
+        $composite = new ResourceClasses\CompositeSerialize(array($x1, $x2));
+
+        $this->assertEquals($composite, unserialize(serialize($composite)));
+    }
+
+    public function testSerializeWithDecorator()
+    {
+        $x = new ResourceClasses\Serialize(1, 2);
+        $decorator = new ResourceClasses\DecoratorForSerialize($x);
+
+        $this->assertEquals($decorator, unserialize(serialize($decorator)));
+    }
+
+    public function testSerializeWithLazy()
+    {
+        $x = self::$generator->lazy(function() {
+            return new ResourceClasses\Serialize(1, 2);
+        }, 'ClassGenerator\tests\ResourceClasses\Serialize');
+
+        $this->assertEquals($x->getA(), unserialize(serialize($x))->getA());
+        $this->assertEquals($x->getB(), unserialize(serialize($x))->getB());
+    }
+
+    public function testSerializeWithLazyConstructor()
+    {
+        $x = new ResourceClasses\LazyConstructorSerialize(1, 2);
+
+        $this->assertEquals($x, unserialize(serialize($x)));
+    }
+
+    public function testSerializeWithReference()
+    {
+        $origin = new ResourceClasses\Serialize(1, 2);
+        $hard = static::$generator->hardReference($origin);
+        $soft = $hard->cgGetWeakReference();
+
+        $unserialized = unserialize(serialize($soft));
+        $this->assertTrue($unserialized->cgIsReferenceValid());
+        $this->assertTrue($unserialized->cgIsHardReference());
+
+        $unserializedSoft = $unserialized->cgGetWeakReference();
+        $this->assertTrue($unserializedSoft->cgIsReferenceValid());
+        $this->assertFalse($unserializedSoft->cgIsHardReference());
+        $this->assertEquals($soft, $unserializedSoft);
+
+        unset($unserialized);
+
+        $this->assertFalse($unserializedSoft->cgIsReferenceValid());
+    }
 }

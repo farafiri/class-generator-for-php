@@ -97,7 +97,33 @@ if (interface_exists($baseClass)) {
         $this->cgLazyProxyCreator = \ClassGenerator\Generator::getInstance();
     }
 
+    <?php if (in_array('Serializable', class_implements($baseClass))) { ?>
+    function serialize() {
+        if ($this->cgProxifiedObject === null) {
+            $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+        }
+
+        if ($this->cgLazyProxySettings === self::$defaultLazyProxySettings) {
+            return serialize(array($this->cgProxifiedObject, $this->cgLazyMethods));
+        } else {
+            return serialize(array($this->cgProxifiedObject, $this->cgLazyMethods, $this->cgLazyProxySettings));
+        }
+    }
+
+    function unserialize($data) {
+        $data = unserialize($data);
+        $this->cgProxifiedObject = $data[0];
+        $this->cgLazyMethods = $data[1];
+        if (isset($data[2])) {
+            $this->cgLazyProxySettings = $data[1];
+        } else {
+            $this->cgLazyProxySettings = self::$defaultLazyProxySettings;
+        }
+    }
+    <?php } ?>
+
     {{method}}
+    <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
     <?php if (in_array($methodName, array("__clone", "cgGetProxifiedObject", "__sleep", "__wakeup"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})

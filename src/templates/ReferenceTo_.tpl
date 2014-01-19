@@ -264,7 +264,34 @@ if (interface_exists($baseClass)) {
         }
     }
 
+    <?php if (in_array('Serializable', class_implements($baseClass))) { ?>
+    function serialize()
+    {
+        if (!$this->cgReferencedObject) {
+            throw new \ClassGenerator\Exceptions\Proxy("Attempt to call serialize on invalid reference");
+        }
+
+        return serialize(array($this->cgIsReferenceValid, $this->cgBehaveLikeNullObject, $this->cgReferencedObject));
+    }
+
+    function unserialize($data)
+    {
+        $data = unserialize($data);
+        $this->cgIsReferenceValid = $data[0];
+        $this->cgBehaveLikeNullObject = $data[1];
+        $this->cgReferencedObject = $data[2];
+
+        if ($this->cgIsReferenceValid) {
+            $this->cgIsHardReference = true;
+            self::$cgReferencesCounter[spl_object_hash($this->cgReferencedObject)] = 1;
+        } else {
+            $this->cgIsHardReference = false;
+        }
+    }
+    <?php } ?>
+
     {{method}}
+    <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
     <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
