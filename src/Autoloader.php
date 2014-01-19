@@ -21,7 +21,7 @@ class Autoloader
     protected $enableCache;
 
     /**
-     * @var Generator
+     * @var GeneratorAggregator
      */
     protected $generator;
 
@@ -33,7 +33,7 @@ class Autoloader
     {
         $this->cachePath = $cachePath;
         $this->enableCache = $enableCache;
-        $this->generator = new Generator();
+        $this->generator = new GeneratorAggregator();
     }
 
     /**
@@ -88,7 +88,7 @@ class Autoloader
     }
 
     /**
-     * @return \ClassGenerator\Generator
+     * @return \ClassGenerator\GeneratorAggregator
      */
     public function getGenerator()
     {
@@ -98,7 +98,7 @@ class Autoloader
 
 
     /**
-     * @param \ClassGenerator\Generator $generator
+     * @param \ClassGenerator\GeneratorAggregator $generator
      */
     public function setGenerator($generator)
     {

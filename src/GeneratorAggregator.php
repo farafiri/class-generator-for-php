@@ -3,10 +3,18 @@
 namespace ClassGenerator;
 
 
-class Generator {
+class GeneratorAggregator
+{
     protected static $instance;
 
     protected $generators;
+
+    /**
+     * array of accepted namespaces
+     *
+     * @var string[]
+     */
+    protected $acceptedNamespaces = array('');
 
     public function __construct()
     {
@@ -46,8 +54,34 @@ class Generator {
         $this->generators = $generators;
     }
 
+    public function setAcceptedNamespaces($acceptedNamespaces)
+    {
+        $this->acceptedNamespaces = $acceptedNamespaces;
+    }
+
+    public function getAcceptedNamespaces()
+    {
+        return $this->acceptedNamespaces;
+    }
+
+    protected function isInAcceptedNamespace($className)
+    {
+        $className = $className . '\\';
+        foreach($this->acceptedNamespaces as $ns) {
+            if (strpos($className, $ns . '\\') === 0 || $ns === '') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function generateCode($className)
     {
+        if (!$this->isInAcceptedNamespace($className)) {
+            return null;
+        }
+
         foreach($this->generators as $generator) {
             $code = $generator->generateCodeFor($className);
             if ($code) {

@@ -863,4 +863,17 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($unserializedSoft->cgIsReferenceValid());
     }
+
+    public function testAbilityToRestrictNamespacesWhereGeneratorWork()
+    {
+        self::$generator->setAcceptedNamespaces(array('ClassGenerator\tests\ResourceClasses'));
+
+        $this->assertFalse(class_exists('ClassGenerator\tests\ResourceClasses2\NullX'));
+
+        self::$generator->setAcceptedNamespaces(array('ClassGenerator\tests\ResourceClasses', 'ClassGenerator\tests\ResourceClasses2'));
+
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses2\NullX2'));
+
+        self::$generator->setAcceptedNamespaces(array(''));
+    }
 }

@@ -27,7 +27,7 @@ if (interface_exists($baseClass)) {
     protected $cgProxifiedObjectCreator;
 
     /**
-     * @var \ClassGenerator\Generator
+     * @var \ClassGenerator\GeneratorAggregator
      */
     protected $cgLazyProxyCreator;
 
@@ -42,9 +42,9 @@ if (interface_exists($baseClass)) {
     protected $cgLazyMethods;
 
     /**
-     * @param mixed                     $proxifiedObjectCreator proxifiedObjectCreator or object itself
-     * @param \ClassGenerator\Generator $lazyProxyCreator
-     * @param boolean                   $lazyMethods
+     * @param mixed                               $proxifiedObjectCreator proxifiedObjectCreator or object itself
+     * @param \ClassGenerator\GeneratorAggregator $lazyProxyCreator
+     * @param boolean                             $lazyMethods
      */
     public function __construct($proxifiedObjectCreator, $lazyProxyCreator = null, $lazyMethods = true)
     {
@@ -57,7 +57,7 @@ if (interface_exists($baseClass)) {
         if ($lazyProxyCreator) {
             $this->cgLazyProxyCreator = $lazyProxyCreator;
         } else {
-            $this->cgLazyProxyCreator = \ClassGenerator\Generator::getInstance();
+            $this->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
         }
 
         $this->cgLazyProxySettings = static::$defaultLazyProxySettings;
@@ -94,7 +94,7 @@ if (interface_exists($baseClass)) {
 
     public function __wakeup()
     {
-        $this->cgLazyProxyCreator = \ClassGenerator\Generator::getInstance();
+        $this->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
     }
 
     <?php if (in_array('Serializable', class_implements($baseClass))) { ?>
