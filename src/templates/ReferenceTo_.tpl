@@ -292,7 +292,7 @@ if (interface_exists($baseClass)) {
 
     {{method}}
     <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
-    <?php if (in_array($methodName, array("__clone"))) continue; ?>
+    <?php if (in_array($methodName, array("__clone", "__sleep", "__wakeup"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

@@ -31,7 +31,7 @@ if (interface_exists($baseClass)) {
     <?php } ?>
 
 {{method}}
-    <?php if (in_array($methodName, array("__clone"))) continue; ?>
+    <?php if (in_array($methodName, array("__clone", "__sleep", "__wakeup"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {
