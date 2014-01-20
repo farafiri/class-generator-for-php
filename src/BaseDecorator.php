@@ -5,16 +5,40 @@ namespace ClassGenerator;
 
 abstract class BaseDecorator implements Interfaces\Decorator
 {
+    const CG_DECORATED = false;
+
     /**
      * @var object
      */
     protected $cgDecorated;
 
     /**
+     * @param object $object
+     *
+     * @return boolean
+     */
+    protected function cgCanBeDecorated($object)
+    {
+        if (static::CG_DECORATED === false) {
+            return true;
+        }
+
+        while($object instanceof Interfaces\Decorator) {
+            $object = $object->cgGetDecorated();
+        }
+
+        return is_a($object, static::CG_DECORATED);
+    }
+
+    /**
      * @param object $decorated
      */
     public function cgSetDecorated($decorated)
     {
+        if (!$this->cgCanBeDecorated($decorated)) {
+            throw new Exceptions\Proxy("Cannot decorate " . get_class($decorated) . " with " . get_class($this). ' decorator');
+        }
+
         $this->cgDecorated = $decorated;
     }
 

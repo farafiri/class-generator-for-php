@@ -890,4 +890,18 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $x1->toNumber());
         $this->assertEquals(7, $x2->toNumber());
     }
+
+
+    public function testRestrictionOnDecoratingClass()
+    {
+        $x = new ResourceClasses\X(1, 2);
+        $x2 = new \ClassGenerator\tests\ResourceClasses2\X(3, 4);
+
+        $swapDecorator = new ResourceClasses\SwapDecorator();
+
+        $swapDecorator->cgDecorate($x);
+
+        $this->setExpectedException('ClassGenerator\Exceptions\Proxy');
+        $swapDecorator->cgDecorate($x2);
+    }
 }
