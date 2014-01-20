@@ -876,4 +876,18 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         self::$generator->setAcceptedNamespaces(array(''));
     }
+
+    public function testWeShouldBeAbleToDoSeveralDecoratesWithSingleDecoratorClass()
+    {
+        $x1 = new ResourceClasses\X(1, 2);
+        $x2 = new ResourceClasses\X(3, 4);
+
+        $numberDecorator = new ResourceClasses\ToNumberDecorator();
+
+        $x1  = $numberDecorator->cgDecorate($x1);
+        $x2 = $numberDecorator->cgDecorate($x2);
+
+        $this->assertEquals(3, $x1->toNumber());
+        $this->assertEquals(7, $x2->toNumber());
+    }
 }

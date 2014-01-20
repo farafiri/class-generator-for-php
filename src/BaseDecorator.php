@@ -41,16 +41,18 @@ abstract class BaseDecorator implements Interfaces\Decorator
      */
     public function cgDecorate($object)
     {
+        $that = $this->cgGetDecorated() ? clone $this: $this;
+
         if ($object instanceof Interfaces\Decorator) {
-            $this->cgSetDecorated($object->cgGetDecorated());
-            $object->cgSetDecorated($this);
+            $that->cgSetDecorated($object->cgGetDecorated());
+            $object->cgSetDecorated($that);
             return $object;
         } else {
             $className = explode('\\', get_class($object));
             $className[count($className) - 1] = 'DecoratorFor' . $className[count($className) - 1];
             $decoratorClassName = implode('\\', $className);
-            $this->cgSetDecorated($object);
-            return new $decoratorClassName($this);
+            $that->cgSetDecorated($object);
+            return new $decoratorClassName($that);
         }
     }
 
