@@ -112,4 +112,10 @@ class GeneratorAggregator
         $referenceClassName = $this->generators['reference']->getClassName(get_class($object));
         return new $referenceClassName($object);
     }
+
+    public function decorate($object)
+    {
+        $decoratorClassName = $this->generators['decorator']->getClassName(get_class($object));
+        return new $decoratorClassName($object);
+    }
 }

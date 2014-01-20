@@ -891,7 +891,6 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(7, $x2->toNumber());
     }
 
-
     public function testRestrictionOnDecoratingClass()
     {
         $x = new ResourceClasses\X(1, 2);
@@ -903,5 +902,54 @@ class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('ClassGenerator\Exceptions\Proxy');
         $swapDecorator->cgDecorate($x2);
+    }
+
+    public function testDecoratorHasDecoratorWithString()
+    {
+        $x = new ResourceClasses\X(2, 5);
+        $decorator = new ResourceClasses\IncreaseDecorator(10);
+        $decorated = $decorator->cgDecorate($x);
+
+        $this->assertFalse($decorated->cgHasDecorator('ClassGenerator\tests\ResourceClasses\ToNumberDecorator'));
+        $this->assertTrue($decorated->cgHasDecorator('ClassGenerator\tests\ResourceClasses\IncreaseDecorator'));
+    }
+
+    public function testDecoratorHasDecoratorWithInstance()
+    {
+        $x = new ResourceClasses\X(2, 5);
+        $decorator = new ResourceClasses\IncreaseDecorator(10);
+        $decorated = $decorator->cgDecorate($x);
+
+        $this->assertFalse($decorated->cgHasDecorator(new ResourceClasses\IncreaseDecorator(5)));
+        $this->assertTrue($decorated->cgHasDecorator(new ResourceClasses\IncreaseDecorator(10)));
+    }
+
+    public function testDecoratorHasDecoratorWithClosure()
+    {
+        $x = new ResourceClasses\X(2, 5);
+        $decorator = new ResourceClasses\IncreaseDecorator(10);
+        $decorated = $decorator->cgDecorate($x);
+
+        $this->assertFalse($decorated->cgHasDecorator(function () {return false;}));
+
+        $closure = function ($_decorator) use ($decorator) {
+            $this->assertEquals($_decorator, $decorator);
+            return true;
+        };
+        $this->assertTrue($decorated->cgHasDecorator($closure->bindTo($this, 'static')));
+    }
+
+    public function testDecoratorRemoveDecorator()
+    {
+        $x = new ResourceClasses\X(2, 5);
+        $decorator1 = new ResourceClasses\IncreaseDecorator(10);
+        $decorator2 = new ResourceClasses\IncreaseDecorator(100);
+        $decorated = $decorator2->cgDecorate($decorator1->cgDecorate($x));
+
+        $this->assertEquals(112, $decorated->getA());
+        $decorated->cgRemoveDecorator($decorator1);
+        $this->assertEquals(102, $decorated->getA());
+        $decorated->cgRemoveDecorator($decorator2);
+        $this->assertEquals(2, $decorated->getA());
     }
 }

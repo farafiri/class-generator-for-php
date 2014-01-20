@@ -49,6 +49,71 @@ if (interface_exists($baseClass)) {
         }
     }
 
+    /**
+     * @param \ClassGenerator\Interfaces\Decorator|\Closure|string $decoratorMatcher
+     *
+     * @return self
+     */
+    public function cgRemoveDecorator($decoratorMatcher)
+    {
+        $object = $this;
+        while ($object->cgGetDecorated() instanceof \ClassGenerator\Interfaces\Decorator) {
+            if ($this->cgMatchDecorator($object->cgGetDecorated(), $decoratorMatcher)) {
+                $object->cgSetDecorated($object->cgGetDecorated()->cgGetDecorated());
+            } else {
+                $object = $object->cgGetDecorated();
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \ClassGenerator\Interfaces\Decorator|\Closure|string $decoratorMatcher
+     *
+     * @return boolean
+     */
+    public function cgHasDecorator($decoratorMatcher)
+    {
+        $object = $this;
+
+        while ($object->cgGetDecorated() instanceof \ClassGenerator\Interfaces\Decorator) {
+            if ($this->cgMatchDecorator($object->cgGetDecorated(), $decoratorMatcher)) {
+                return true;
+            } else {
+                $object = $object->cgGetDecorated();
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \ClassGenerator\Interfaces\Decorator                 $decorator
+     * @param \ClassGenerator\Interfaces\Decorator|\Closure|string $decoratorMatcher
+     *
+     * @return boolean
+     */
+    protected function cgMatchDecorator($decorator, $decoratorMatcher)
+    {
+        if (is_string($decoratorMatcher)) {
+            return is_a($decorator, $decoratorMatcher);
+        } elseif ($decoratorMatcher instanceof \ClassGenerator\Interfaces\Decorator) {
+            if (get_class($decoratorMatcher) === get_class($decorator)) {
+                $decoratorMatcher = clone $decoratorMatcher;
+                $decoratorMatcher->cgSetDecorated($decorator->cgGetDecorated());
+                return $decoratorMatcher == $decorator;
+            }
+
+            return false;
+        } elseif ($decoratorMatcher instanceof \Closure) {
+            return $decoratorMatcher($decorator);
+        } else {
+            throw new \InvalidArgumentException("Argument provided for cgHasDecorator/cgRemoveDecorator should be string or
+                                                 instanceof Closure or instanceof ClassGenerator\Interfaces\Decorator");
+        }
+    }
+
     public function __call($methodName, $arguments)
     {
         return call_user_func_array(array($this->cgDecorated, $methodName), $arguments);
