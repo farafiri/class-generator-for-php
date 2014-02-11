@@ -130,7 +130,7 @@ class Autoloader
      */
     protected function getFileNameForClass($className)
     {
-        return $this->cachePath . DIRECTORY_SEPARATOR . str_replace('\\', '__', $className);
+        return $this->cachePath . DIRECTORY_SEPARATOR . str_replace('\\', '__', $className) . '.php';
     }
 
     /**
