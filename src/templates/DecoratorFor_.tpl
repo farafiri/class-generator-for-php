@@ -38,6 +38,14 @@ if (interface_exists($baseClass)) {
     }
 
     /**
+     * @param \ClassGenerator\BaseDecorator $decorator
+     */
+    public function cgDecorateWith(\ClassGenerator\BaseDecorator $decorator)
+    {
+        $decorator->cgDecorate($this);
+    }
+
+    /**
      * @param \{{baseClass}}|\ClassGenerator\BaseDecorator $decorated
      */
     public function cgSetDecorated($decorated)
