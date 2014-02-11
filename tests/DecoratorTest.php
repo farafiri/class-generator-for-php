@@ -166,4 +166,16 @@ class DecoratorTest extends BaseTest
 
         $this->assertEquals(12, $decorable->getA());
     }
+
+    public function testCreateDecorableObjectUsingDecorableTemplate()
+    {
+        $decorable = new ResourceClasses\DecorableX(2, 5);
+
+        $this->assertEquals(2, $decorable->getA());
+
+        $decorator = new ResourceClasses\IncreaseDecorator(10);
+        $decorator->cgDecorate($decorable);
+
+        $this->assertEquals(12, $decorable->getA());
+    }
 }

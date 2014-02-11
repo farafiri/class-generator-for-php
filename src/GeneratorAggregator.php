@@ -27,6 +27,7 @@ class GeneratorAggregator
             'reference' => new SimpleClassGenerator('ReferenceTo*', $templateClassCodeGenerator),
             'override' => new SimpleClassGenerator('MethodOverrided*', $templateClassCodeGenerator),
             'decorator' => new SimpleClassGenerator('DecoratorFor*', $templateClassCodeGenerator),
+            'decorable' => new SimpleClassGenerator('Decorable*', $templateClassCodeGenerator),
             'composite' =>  new SimpleClassGenerator('Composite*', $templateClassCodeGenerator),
         );
 
