@@ -1,64 +1,92 @@
 class-generator-for-php
 =======================
 
-Tool for creating and autoloading classes for common patterns like decorator, null object, composite, lazy loading
+Library for creating and autoloading classes for common patterns like decorator, null object, composite, lazy loading, proxy object (OOP framework)
+All generated classes can be cached so there is no relevant performance impact.
 
-Problem:
---------
+Examples
+========
 
-Following OOP principles and software patterns is usually good idea but quite often it means a lot of (unnecessary) work.
-Let say you have class/interface X with methods getA, getB, ... and so on, and you want to write an null object for this class. Your code will look like:
-
+//Let say you have following entity class /note that the class is not complete (no properties declaration, etc) for sake of readability
 ```php
-class NullX implements X {
-    public function __construct() {}
-    
-    public function getA() {
-        return null;
+class Book implements PriceInterface {
+    public function __construct($id) {
+        $this->id = $id;
+        $this->loadPropertiesFromDb($id);
     }
 
-    public function getB() {
-        return new NullY();
-    }
-    
-    //and so on
-}
-```
-
-If you want decorator then your code will loke like this:
-
-```php
-class DecoratorForX implements X {
-    protected $decorated;
-    
-    public function __construct(X $decorated) {
-        $this->decorated = $decorated;
-    }
-    
-    public function getA() {
-        return $this->decorated->getA();
+    /**
+     * @return \Author
+     */
+    public function getAuthor() {
+        return new Author($this->authorId);
     }
 
-    public function getB() {
-        return $this->decorated->getB();
-    }
-    
-    //and so on
-}
-
-class DoSmthDecorator extends DecoratorForX {
-    public function yourNewMethod() {
+    /**
+     * @return int
+     */
+    public function getPrice() {
+        return $this->price;
     }
 }
 ```
 
-We have following problems with it:
+Decorating:
+___________
+```php
+class DiscountDecorator extends ClassGenerator\BaseDecorator {
+    const CG_DECORATED = 'PriceInterface'; //by default you can decorate any class. This const will restrict to given interface or class
+    protected $discount;
 
-  1. You have to write it first (and there is no more painful thing for programmer than a work without some creativity) + if any method should return object you must implement additional NullObject class
-  2. Whenever you change X you must remember to update NullX and DecoratorForX
-  3. If you have class Y (child of X) then check: (new DoSmthDecorator(new Y) instanceof Y) will fail
-  
-This tool will create and load these classes on the fly when you try to use them.
+    public function __construct($discount = 0.8) {
+        $this->discount = $discount;
+    }
+
+    public function getPrice() {
+        return ceil($this->cgDecorated->getPrice() * $this->discount);
+    }
+}
+
+$book = new DecorableBook($id);
+$book->cgDecorate(new DiscountDecorator(0.9));
+```
+
+NullObject:
+___________
+```php
+$book = new NullBook($id);
+//null object gets expected result type from phpDoc and returns proper empty value
+$book->getPrice(); // 0
+$book->getAuthor(); // NullAuthor
+```
+
+LazyConstructor:
+___________
+```php
+$book = new LazyConstructorBook($id);
+//no DB query performed yet
+$book->getPrice();
+//retrieved data from DB and proper price returned
+```
+
+Lazy:
+_____
+```php
+$book = new LazyBook(function() { return new Book($id); });
+//no DB query performed yet
+$book->getPrice();
+//retrieved data from DB and proper price returned
+```
+
+Difference between lazy and lazyConstructor:
+```php
+$lazyConstructorBook = new LazyConstructorBook($id); //no DB query performed yet
+$lazyBook = new LazyBook(function() use($id) { return new Book($id); }); //no DB query performed yet
+
+$author1 = $lazyConstructorBook->getAuthor(); // 2 queries performed (book and author)
+$author2 = $lazyBook->getAuthor(); // still no queries performed (LazyAuthor returned)
+$author2->getFirstName(); //retrieve book and author data
+```
 
 Set up
 ------
