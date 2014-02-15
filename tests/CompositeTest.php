@@ -257,4 +257,45 @@ class CompositeTest extends BaseTest
 
         $this->assertEquals($composite, unserialize(serialize($composite)));
     }
+
+    public function testCompositeWithAndReturnsFirstFalsyValue()
+    {
+        $x1 = new ResourceClasses\Z(23, 0);
+        $x2 = new ResourceClasses\Z(0, 0);
+
+        $composite = new ResourceClasses\CompositeZ(array($x1, $x2));
+
+        $this->assertEquals(0, $composite->getA());
+    }
+
+    public function testCompositeWithAndReturnsFirstValueIfNoFalsyValueFound()
+    {
+        $x1 = new ResourceClasses\Z(23, 0);
+        $x2 = new ResourceClasses\Z(12, 0);
+
+        $composite = new ResourceClasses\CompositeZ(array($x1, $x2));
+
+        $this->assertEquals(23, $composite->getA());
+    }
+
+    public function testCompositeWithMaxReturnsMaximumValue()
+    {
+        $x1 = new ResourceClasses\Z(0, 5);
+        $x2 = new ResourceClasses\Z(0, 12);
+        $x3 = new ResourceClasses\Z(0, 7);
+
+        $composite = new ResourceClasses\CompositeZ(array($x1, $x2, $x3));
+
+        $this->assertEquals(12, $composite->getB());
+    }
+
+    public function testCompositeWithImplodeReturnsImplodedValue()
+    {
+        $x1 = new ResourceClasses\Z(1, 2);
+        $x2 = new ResourceClasses\Z(3, 4);
+
+        $composite = new ResourceClasses\CompositeZ(array($x1, $x2));
+
+        $this->assertEquals('1 2,3 4', (string) $composite);
+    }
 }

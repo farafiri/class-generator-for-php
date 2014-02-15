@@ -15,11 +15,19 @@ class Utils {
         'isLazyMethods' => false
     );
 
-    public static function getReturnType(\ReflectionMethod $reflectionMethod)
+    public static function getDocAttribute(\ReflectionMethod $reflectionMethod, $attributeName)
     {
         $doc = $reflectionMethod->getDocComment();
+        if ($doc && preg_match('/\* @' . $attributeName . '\s?(.*)\r?\n/', $doc, $matches)) {
+            return $matches[1];
+        }
+    }
 
-        if ($doc && preg_match('/\* @returns?\s([^\s]+)/', $doc, $matches)) {
+    public static function getReturnType(\ReflectionMethod $reflectionMethod)
+    {
+        $docReturn = self::getDocAttribute($reflectionMethod, 'returns?');
+        if ($docReturn) {
+            preg_match('/(.*?)\s.*/', $docReturn . ' ', $matches);
             return $matches[1];
         }
 

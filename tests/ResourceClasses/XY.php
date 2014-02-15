@@ -7,6 +7,9 @@ class XY extends X
 {
     protected $c = 67;
 
+    /**
+     * @composite sum
+     */
     public function getC()
     {
         return $this->c;

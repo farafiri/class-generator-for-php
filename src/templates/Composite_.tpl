@@ -203,50 +203,42 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {
-        <?php if (\ClassGenerator\Utils\Utils::returnsArrayOrNull($reflectionMethod)) { ?>
-        $result = array();
+        $collection = array();
         foreach($this->cgChildren as $child) {
-            $childResult = $child->{{methodName}}({{parameters}});
-            $result = array_merge($result, $childResult);
+            $collection[] = $child->{{methodName}}({{parameters}});
         }
 
-        return $result;
-        <?php } elseif (\ClassGenerator\Utils\Utils::returnedObjectClassName($reflectionMethod, true)) {
-            $returnClassName = \ClassGenerator\Utils\Utils::returnedObjectClassName($reflectionMethod, true);
-            $canReturnNull = !(\ClassGenerator\Utils\Utils::returnedObjectClassName($reflectionMethod, false));
-
-            if (in_array('ClassGenerator\Interfaces\Composite', class_implements($returnClassName))) {
-                $compositeClassName = $returnClassName;
+        <?php
+            $compositeFunction = 'or';
+            if ($x = \ClassGenerator\Utils\Utils::getDocAttribute($reflectionMethod, 'composite')) {
+                $compositeFunction = $x;
             } else {
-                $compositeClassName = \ClassGenerator\Autoloader::getInstance()->getGenerator()->getNewClassNameFor($returnClassName, 'composite');
+                if (\ClassGenerator\Utils\Utils::returnsArrayOrNull($reflectionMethod)) {
+                    $compositeFunction = 'merge';
+                } elseif (\ClassGenerator\Utils\Utils::returnedObjectClassName($reflectionMethod, true)) {
+                    $returnClassName = \ClassGenerator\Utils\Utils::returnedObjectClassName($reflectionMethod, true);
+                    $canReturnNull = !(\ClassGenerator\Utils\Utils::returnedObjectClassName($reflectionMethod, false));
+                    if (in_array('ClassGenerator\Interfaces\Composite', class_implements($returnClassName))) {
+                        $compositeClassName = $returnClassName;
+                    } else {
+                        $compositeClassName = \ClassGenerator\Autoloader::getInstance()->getGenerator()->getNewClassNameFor($returnClassName, 'composite');
+                    }
+
+                    $strCanReturnNull = $canReturnNull ? 'true' : 'false';
+                    $compositeFunction = "composite('$compositeClassName', $strCanReturnNull)";
+                }
             }
+
+            $bracketPosition = strpos($compositeFunction, '(');
+            if ($bracketPosition) {
+                $fn = substr($compositeFunction, 0, $bracketPosition + 1) . '$collection, ' . substr($compositeFunction, $bracketPosition + 1);
+            } else {
+                $fn = $compositeFunction . '($collection)';
+            }
+
+            $fn = ucfirst($fn);
         ?>
-        $resultArray = array();
-        foreach($this->cgChildren as $child) {
-            $childResult = $child->{{methodName}}({{parameters}});
-            if ($childResult !== null) {
-                $resultArray[] = $childResult;
-            }
-        }
-
-        <?php if ($canReturnNull) { ?>
-        if ($resultArray === array()) {
-            return null;
-        }
-        <?php } ?>
-
-        return new \{{compositeClassName}}($resultArray);
-        <?php } else { ?>
-        $result = null;
-        foreach($this->cgChildren as $child) {
-            $childResult = $child->{{methodName}}({{parameters}});
-            if ($childResult && !$result || $childResult !== null && $result === null) {
-                $result = $childResult;
-            }
-        }
-
-        return $result;
-        <?php } ?>
+        return \ClassGenerator\Utils\AggregateFunctions::af{{fn}};
     }
 
     {{\method}}
