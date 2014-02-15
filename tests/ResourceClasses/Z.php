@@ -14,6 +14,7 @@ class Z
     }
 
     /**
+     * @nullObject return 1
      * @composite and
      * @return int
      */
@@ -22,6 +23,7 @@ class Z
     }
 
     /**
+     * @nullObject throw new \BadFunctionCallException()
      * @composite max
      * @return int
      */
@@ -31,6 +33,7 @@ class Z
 
 
     /**
+     * @nullObject return 'empty'
      * @composite implode(',', 'empty')
      * @return string
      */

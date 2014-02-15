@@ -46,4 +46,20 @@ class NullTest extends BaseTest
 
         $this->assertEquals($x, unserialize(serialize($x)));
     }
+
+    public function testPhpDocReturn()
+    {
+        $x = new ResourceClasses\NullZ();
+
+        $this->assertEquals(1, $x->getA());
+        $this->assertEquals('empty', (string) $x);
+    }
+
+    public function testPhpDocThrow()
+    {
+        $x = new ResourceClasses\NullZ();
+
+        $this->setExpectedException('BadFunctionCallException');
+        $x->getB();
+    }
 }
