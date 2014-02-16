@@ -7,7 +7,7 @@ All generated classes can be cached so there is no relevant performance impact.
 Examples
 ========
 
-//Let say you have following entity class /note that the class is not complete (no properties declaration, etc) for sake of readability
+Let say you have following entity class. Note that the class is not complete (no properties declaration, etc) for sake of readability
 ```php
 class Book implements PriceInterface {
     public function __construct($id) {
@@ -28,11 +28,18 @@ class Book implements PriceInterface {
     public function getPrice() {
         return $this->price;
     }
+
+    /**
+     * @return Tag[]
+     */
+    public function getTags() {
+        return array_map(function($id) {return new Tag($id);}, $this->tagsIds);
+    }
 }
 ```
-
-Decorating:
 ___________
+Decorating:
+
 ```php
 class DiscountDecorator extends ClassGenerator\BaseDecorator {
     const CG_DECORATED = 'PriceInterface'; //by default you can decorate any class. This const will restrict to given interface or class
@@ -50,27 +57,27 @@ class DiscountDecorator extends ClassGenerator\BaseDecorator {
 $book = new DecorableBook($id);
 $book->cgDecorate(new DiscountDecorator(0.9));
 ```
-
-NullObject:
 ___________
+NullObject:
+
 ```php
 $book = new NullBook($id);
 //null object gets expected result type from phpDoc and returns proper empty value
 $book->getPrice(); // 0
 $book->getAuthor(); // NullAuthor
 ```
-
-LazyConstructor:
 ___________
+LazyConstructor:
+
 ```php
 $book = new LazyConstructorBook($id);
 //no DB query performed yet
 $book->getPrice();
 //retrieved data from DB and proper price returned
 ```
-
-Lazy:
 _____
+Lazy:
+
 ```php
 $book = new LazyBook(function() { return new Book($id); });
 //no DB query performed yet
@@ -87,7 +94,24 @@ $author1 = $lazyConstructorBook->getAuthor(); // 2 queries performed (book and a
 $author2 = $lazyBook->getAuthor(); // still no queries performed (LazyAuthor returned)
 $author2->getFirstName(); //retrieve book and author data
 ```
+__________
+Composite:
 
+```php
+$book1 = new Book(1);
+$book2 = new Book(2);
+
+$composite = new CompositeBook(array($book1, $book2));
+
+$composite->getAuthor(); //will return composite of book authors (new CompositeAuthor(array($book1->getAuthor(), $book2->getAuthor())))
+$composite->getTags(); //will return all tags (array_merge($book1->getTags(), $book2->getTags()))
+$composite->getPrice(); // will return first value which evaluate to true
+```
+
+We may customize behaviour by adding @composite annotation
+For example: if we add @composite sum to price method then $composite->getPrice() will return sum of all prices
+
+______
 Set up
 ------
 
