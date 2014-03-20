@@ -5,12 +5,17 @@ use ClassGenerator\tests\ResourceClasses;
 
 class DecoratorTest extends BaseTest
 {
-    public function testDecorator()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX')
+     *           ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface')
+     */
+    public function testDecorator($testedClass)
     {
         $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\DecoratorForX'));
 
         $x = new ResourceClasses\X();
-        $decorator = new ResourceClasses\DecoratorForX($x);
+        $decorator = new $testedClass($x);
 
         $this->assertEquals(10, $decorator->getA());
 
@@ -18,20 +23,30 @@ class DecoratorTest extends BaseTest
         $this->assertEquals(32, $decorator->getA());
     }
 
-    public function testDecoratorIsInstanceOfBase()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX', 'ClassGenerator\tests\ResourceClasses\X')
+     *           ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
+     */
+    public function testDecoratorIsInstanceOfBase($testedClass, $parentClass)
     {
         $x = new ResourceClasses\X();
-        $decorator = new ResourceClasses\DecoratorForX($x);
+        $decorator = new $testedClass($x);
 
-        $this->assertTrue($decorator instanceof ResourceClasses\X);
+        $this->assertTrue($decorator instanceof $parentClass);
     }
 
-    public function testBaseDecorator()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX')
+     *           ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface')
+     */
+    public function testBaseDecorator($testedClass)
     {
         $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX'));
 
         $x = new ResourceClasses\X();
-        $decorator = new ResourceClasses\BaseDecoratorForX($x);
+        $decorator = new $testedClass($x);
 
         $this->assertEquals(10, $decorator->getA());
 
@@ -39,19 +54,29 @@ class DecoratorTest extends BaseTest
         $this->assertEquals(32, $decorator->getA());
     }
 
-    public function testCloneOnDecorator()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX')
+     *           ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface')
+     */
+    public function testCloneOnDecorator($testedClass)
     {
         $x1 = new ResourceClasses\X();
-        $decorator = new ResourceClasses\DecoratorForX($x1);
+        $decorator = new $testedClass($x1);
 
         $decorator2 = clone $decorator;
         $this->assertNotSame($x1, $decorator2->cgGetDecorated());
         $this->assertEquals($x1, $decorator2->cgGetDecorated());
     }
 
-    public function testSleepWakeupOnDecorator()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX')
+     *           ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface')
+     */
+    public function testSleepWakeupOnDecorator($testedClass)
     {
-        $decorator1 = new ResourceClasses\DecoratorForX(new ResourceClasses\X());
+        $decorator1 = new $testedClass(new ResourceClasses\X());
         $decorator2 = unserialize(serialize($decorator1));
 
         $this->assertEquals($decorator1, $decorator2);

@@ -5,17 +5,27 @@ use ClassGenerator\tests\ResourceClasses;
 
 class LazyTest extends BaseTest
 {
-    public function testLazyIsInstanceOfLazy()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\X')
+     *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
+     */
+    public function testLazyIsInstanceOfLazy($testedClass, $parentClass)
     {
-        $x = new ResourceClasses\LazyX(1, 2);
-        $this->assertTrue($x instanceof \ClassGenerator\Interfaces\Lazy);
+        $x = new $testedClass(1, 2);
+        $this->assertTrue($x instanceof $parentClass);
     }
 
-    public function testLazyProducesInstanceOfLazy()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
+     */
+    public function testLazyProducesInstanceOfLazy($testedClass)
     {
-        $x = new ResourceClasses\LazyX(1, 2);
+        $x = new $testedClass(1, 2);
         $x2 = $x->createAnotherX();
-        $this->assertTrue($x2 instanceof \ClassGenerator\Interfaces\Lazy);
+        $this->assertTrue($x2 instanceof ResourceClasses\LazyX);
     }
 
     public function testBaseLazy()
@@ -31,9 +41,14 @@ class LazyTest extends BaseTest
         $this->assertEquals(-1, $x2->getB());
     }
 
-    public function testBaseLazyWithExistingProxifiedObject()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
+     */
+    public function testBaseLazyWithExistingProxifiedObject($testedClass)
     {
-        $x = ResourceClasses\LazyX::cgGet(new ResourceClasses\X(1, 2));
+        $x = $testedClass::cgGet(new ResourceClasses\X(1, 2));
 
         $this->assertEquals(1, $x->getA());
         $this->assertEquals(2, $x->getB());
@@ -44,9 +59,14 @@ class LazyTest extends BaseTest
         $this->assertEquals(-1, $x2->getB());
     }
 
-    public function testBaseLazyWithClosure()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
+     */
+    public function testBaseLazyWithClosure($testedClass)
     {
-        $x = ResourceClasses\LazyX::cgGet(function () { return new ResourceClasses\X(1, 2);});
+        $x = $testedClass::cgGet(function () { return new ResourceClasses\X(1, 2);});
 
         $this->assertEquals(1, $x->getA());
         $this->assertEquals(2, $x->getB());

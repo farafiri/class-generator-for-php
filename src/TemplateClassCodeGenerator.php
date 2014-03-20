@@ -18,6 +18,7 @@ class TemplateClassCodeGenerator
         } catch(\Exception $e) {
             $reflectionMethod = null;
             $parametersDefinition = null;
+            $parameters = null;
         }
         $generatorNamespace = __NAMESPACE__;
         $template = str_replace('{{method}}', '<?php foreach($reflectionClass->getMethods(\\ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {

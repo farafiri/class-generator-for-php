@@ -5,20 +5,30 @@ use ClassGenerator\tests\ResourceClasses;
 
 class NullTest extends BaseTest
 {
-    public function testNull()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\NullX')
+     *           ('ClassGenerator\tests\ResourceClasses\NullXInterface')
+     */
+    public function testNull($testedClass)
     {
         $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\NullX'));
-        $nullObject = new ResourceClasses\NullX();
+        $nullObject = new $testedClass();
 
         $this->assertEquals(null, $nullObject->getA());
         $this->assertEquals(0, $nullObject->getB());
     }
 
-    public function testNullObjectIsInstanceOfBase()
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\NullX', 'ClassGenerator\tests\ResourceClasses\X')
+     *           ('ClassGenerator\tests\ResourceClasses\NullXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
+     */
+    public function testNullObjectIsInstanceOfBase($testedClass, $parentClass)
     {
-        $n = new ResourceClasses\NullX();
+        $n = new $testedClass();
 
-        $this->assertTrue($n instanceof ResourceClasses\X);
+        $this->assertTrue($n instanceof $parentClass);
     }
 
     public function testBaseNull()

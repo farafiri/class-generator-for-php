@@ -24,4 +24,15 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function testO()
     {
     }
+
+    public function withProvider($testName)
+    {
+        $rc = new \ReflectionMethod(get_class($this), $testName);
+        if (preg_match('/\*\s@testWith\s((.|\n)*)?(\*\s@|\*?\*\/)/', $rc->getDocComment(), $match)) {
+            $arrayCode = 'array(array' . preg_replace('/\n\s*\*/', ',array', $match[1]) . ')';
+            return eval('return ' . $arrayCode . ';');
+        };
+
+        throw new \Exception('No @testWith found in ' . get_class($this) . '::' . $testName);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace ClassGenerator\tests\ResourceClasses;
 
-class X
+class X implements XInterface
 {
     public static $constructorCount = 0;
 

@@ -1,13 +1,19 @@
 <?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : ''; ?>
 
-class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}\Interfaces\Composite
+class {{newClassName}} <?php
+$interfaces = '\\' . $generatorNamespace . '\\Interfaces\\Generated, \\' . $generatorNamespace . '\\Interfaces\\Composite';
+if (interface_exists($baseClass)) {
+    echo 'implements \\' . $baseClass . ', ' . $interfaces;
+} else {
+    echo 'extends \\' . $baseClass . ' implements ' . $interfaces;
+} ?>
 {
     /**
      * @var \{{baseClass}}[]
      */
     protected $cgChildren;
 
-    <?php if (in_array('Iterator', class_implements($baseClass))) { ?>
+    <?php if (in_array('Iterator', class_implements($baseClass)) || $baseClass == 'Iterator') { ?>
     protected $cgIterator;
     <?php } ?>
 
@@ -17,7 +23,7 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
     public function __construct(array $children = array())
     {
         $this->cgChildren = $children;
-        <?php if (in_array('Iterator', class_implements($baseClass))) { ?>
+        <?php if (in_array('Iterator', class_implements($baseClass)) || $baseClass == 'Iterator') { ?>
         $this->cgIterator = new \ClassGenerator\Utils\ConsecutiveIteratorsIterator(new \ArrayIterator($this->cgChildren));
         <?php } ?>
     }
@@ -137,7 +143,7 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
     }
     <?php } ?>
 
-    <?php if (in_array('Iterator', class_implements($baseClass))) { ?>
+    <?php if (in_array('Iterator', class_implements($baseClass)) || $baseClass == 'Iterator') { ?>
     public function rewind() {
         return $this->cgIterator->rewind();
     }
@@ -158,13 +164,13 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
         return $this->cgIterator->valid();
     }
     <?php } ?>
-    <?php if (in_array('getInnerIterator', class_implements($baseClass))) { ?>
+    <?php if (in_array('InnerIterator', class_implements($baseClass)) || $baseClass == 'InnerIterator') { ?>
     public function valid() {
         return $this->cgIterator->getInnerIterator();
     }
 
     <?php } ?>
-    <?php if (in_array('RecursiveIterator', class_implements($baseClass))) { ?>
+    <?php if (in_array('RecursiveIterator', class_implements($baseClass)) || $baseClass == 'RecursiveIterator') { ?>
     function getChildren() {
         return $this->cgIterator->getChildren();
     }
@@ -175,7 +181,7 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
 
     <?php } ?>
 
-    <?php if (in_array('IteratorAggregate', class_implements($baseClass))) { ?>
+    <?php if (in_array('IteratorAggregate', class_implements($baseClass)) || $baseClass == 'IteratorAggregate') { ?>
     function getIterator() {
         return new \ClassGenerator\Utils\ConsecutiveIteratorsIterator(new \ArrayIterator($this->cgChildren));
     }
@@ -195,10 +201,10 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
 
     {{method}}
     <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
-    <?php if (in_array('IteratorAggregate', class_implements($baseClass)) && in_array($methodName, array('getIterator'))) continue; ?>
-    <?php if (in_array('OuterIterator', class_implements($baseClass)) && in_array($methodName, array('getInnerIterator'))) continue; ?>
-    <?php if (in_array('RecursiveIterator', class_implements($baseClass)) && in_array($methodName, array('getChildren', 'hasChildren'))) continue; ?>
-    <?php if (in_array('Iterator', class_implements($baseClass)) && in_array($methodName, array('rewind', 'current', 'key', 'next', 'valid'))) continue; ?>
+    <?php if ((in_array('IteratorAggregate', class_implements($baseClass)) || $baseClass == 'IteratorAggregate') && in_array($methodName, array('getIterator'))) continue; ?>
+    <?php if ((in_array('OuterIterator', class_implements($baseClass)) || $baseClass == 'OuterIterator') && in_array($methodName, array('getInnerIterator'))) continue; ?>
+    <?php if ((in_array('RecursiveIterator', class_implements($baseClass)) || $baseClass == 'RecursiveIterator') && in_array($methodName, array('getChildren', 'hasChildren'))) continue; ?>
+    <?php if ((in_array('Iterator', class_implements($baseClass)) || $baseClass == 'Iterator') && in_array($methodName, array('rewind', 'current', 'key', 'next', 'valid'))) continue; ?>
     <?php if (in_array($methodName, array('__clone', '__sleep', '__wakeup'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
