@@ -8,6 +8,14 @@ if (interface_exists($baseClass)) {
     echo 'extends \\' . $baseClass . ' implements ' . $interfaces;
 } ?>
 {
+    public function __construct({{parametersDefinition}})
+    {
+        $this->cgProxifiedObjectConstructorParameters = array({{parameters}});
+        $this->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
+        $this->cgLazyProxySettings = static::$defaultLazyProxySettings;
+        $this->cgLazyMethods = true;
+    }
+
     {{method}}
     <?php
         $methodSettings[$methodName] = \ClassGenerator\Utils\Utils::getMethodLazyOptions($reflectionMethod);
@@ -24,7 +32,12 @@ if (interface_exists($baseClass)) {
     /**
      * @var null|callable
      */
-    protected $cgProxifiedObjectCreator;
+    protected $cgProxifiedObjectCreator = null;
+
+    /**
+     * @var array|null
+     */
+    protected $cgProxifiedObjectConstructorParameters = null;
 
     /**
      * @var \ClassGenerator\GeneratorAggregator
@@ -46,22 +59,27 @@ if (interface_exists($baseClass)) {
      * @param \ClassGenerator\GeneratorAggregator $lazyProxyCreator
      * @param boolean                             $lazyMethods
      */
-    public function __construct($proxifiedObjectCreator, $lazyProxyCreator = null, $lazyMethods = true)
+    static public function cgGet($proxifiedObjectCreator, $lazyProxyCreator = null, $lazyMethods = true)
     {
+        $ref = new \ReflectionClass('{{newClass}}');
+        $that = $ref->newInstanceWithoutConstructor();
+
         if ($proxifiedObjectCreator instanceof \Closure) {
-            $this->cgProxifiedObjectCreator = $proxifiedObjectCreator;
+            $that->cgProxifiedObjectCreator = $proxifiedObjectCreator;
         } else {
-            $this->cgProxifiedObject = $proxifiedObjectCreator;
+            $that->cgProxifiedObject = $proxifiedObjectCreator;
         }
 
         if ($lazyProxyCreator) {
-            $this->cgLazyProxyCreator = $lazyProxyCreator;
+            $that->cgLazyProxyCreator = $lazyProxyCreator;
         } else {
-            $this->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
+            $that->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
         }
 
-        $this->cgLazyProxySettings = static::$defaultLazyProxySettings;
-        $this->cgLazyMethods = $lazyMethods;
+        $that->cgLazyProxySettings = static::$defaultLazyProxySettings;
+        $that->cgLazyMethods = $lazyMethods;
+
+        return $that;
     }
 
     /**
@@ -131,7 +149,12 @@ if (interface_exists($baseClass)) {
         if ($this->cgLazyMethods && $this->cgLazyProxySettings['{{methodName}}']['isLazyEvaluated']) {
             $closure = function () <?php echo $parameters ? "use ($parameters) " : ""; ?> {
                 if ($this->cgProxifiedObject === null) {
-                    $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+                    if ($this->cgProxifiedObjectConstructorParameters === null) {
+                        $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+                    } else {
+                        $ref = new \ReflectionClass('{{baseClass}}');
+                        $this->cgProxifiedObject = $ref->newInstanceArgs($this->cgProxifiedObjectConstructorParameters);
+                    }
 
                     if (!(is_object($this->cgProxifiedObject) && $this->cgProxifiedObject instanceof \{{baseClass}})) {
                         throw new \ClassGenerator\Exceptions\Proxy('Proxy is not instanceof \{{baseClass}}');
@@ -145,7 +168,12 @@ if (interface_exists($baseClass)) {
         }
 
         if ($this->cgProxifiedObject === null) {
-            $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+            if ($this->cgProxifiedObjectConstructorParameters === null) {
+                $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);
+            } else {
+                $ref = new \ReflectionClass('{{baseClass}}');
+                $this->cgProxifiedObject = $ref->newInstanceArgs($this->cgProxifiedObjectConstructorParameters);
+            }
 
             if (!(is_object($this->cgProxifiedObject) && $this->cgProxifiedObject instanceof \{{baseClass}})) {
                 throw new \ClassGenerator\Exceptions\Proxy('Proxy is not instanceof \{{baseClass}}');

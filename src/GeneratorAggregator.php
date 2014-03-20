@@ -99,13 +99,13 @@ class GeneratorAggregator
     public function lazy($closure, $className, $lazyMethods = true)
     {
         $lazyClassName = $this->generators['lazy']->getClassName($className);
-        return new $lazyClassName($closure, $this, $lazyMethods);
+        return $lazyClassName::cgGet($closure, $this, $lazyMethods);
     }
 
     public function lazyMethods($object)
     {
         $lazyClassName = $this->generators['lazy']->getClassName(get_class($object));
-        return new $lazyClassName($object, $this);
+        return $lazyClassName::cgGet($object, $this);
     }
 
     public function hardReference($object)

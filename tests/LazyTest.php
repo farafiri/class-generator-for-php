@@ -7,20 +7,59 @@ class LazyTest extends BaseTest
 {
     public function testLazyIsInstanceOfLazy()
     {
-        $x = new ResourceClasses\LazyX(new ResourceClasses\X(1, 2));
+        $x = new ResourceClasses\LazyX(1, 2);
         $this->assertTrue($x instanceof \ClassGenerator\Interfaces\Lazy);
     }
 
     public function testLazyProducesInstanceOfLazy()
     {
-        $x = new ResourceClasses\LazyX(new ResourceClasses\X(1, 2));
+        $x = new ResourceClasses\LazyX(1, 2);
         $x2 = $x->createAnotherX();
         $this->assertTrue($x2 instanceof \ClassGenerator\Interfaces\Lazy);
     }
 
-    public function testLazy()
+    public function testBaseLazy()
     {
-        $x = new ResourceClasses\LazyX(new ResourceClasses\X(1, 2));
+        $x = new ResourceClasses\LazyX(1, 2);
+
+        $this->assertEquals(1, $x->getA());
+        $this->assertEquals(2, $x->getB());
+
+        $x2 = $x->createAnotherX();
+
+        $this->assertEquals(3, $x2->getA());
+        $this->assertEquals(-1, $x2->getB());
+    }
+
+    public function testBaseLazyWithExistingProxifiedObject()
+    {
+        $x = ResourceClasses\LazyX::cgGet(new ResourceClasses\X(1, 2));
+
+        $this->assertEquals(1, $x->getA());
+        $this->assertEquals(2, $x->getB());
+
+        $x2 = $x->createAnotherX();
+
+        $this->assertEquals(3, $x2->getA());
+        $this->assertEquals(-1, $x2->getB());
+    }
+
+    public function testBaseLazyWithClosure()
+    {
+        $x = ResourceClasses\LazyX::cgGet(function () { return new ResourceClasses\X(1, 2);});
+
+        $this->assertEquals(1, $x->getA());
+        $this->assertEquals(2, $x->getB());
+
+        $x2 = $x->createAnotherX();
+
+        $this->assertEquals(3, $x2->getA());
+        $this->assertEquals(-1, $x2->getB());
+    }
+
+    public function testLazyWithConstructorCallCount()
+    {
+        $x = new ResourceClasses\LazyX(1, 2);
         ResourceClasses\X::$constructorCount = 0;
 
         $x2 = $x->createAnotherX()->createAnotherX()->createAnotherX()->createAnotherX();
@@ -28,7 +67,7 @@ class LazyTest extends BaseTest
         $this->assertEquals(0, ResourceClasses\X::$constructorCount);
         $this->assertEquals(4, $x2->getA());
         $this->assertEquals(8, $x2->getB());
-        $this->assertEquals(4, ResourceClasses\X::$constructorCount);
+        $this->assertEquals(5, ResourceClasses\X::$constructorCount);
     }
 
     public function testGeneratorLazy()
@@ -60,7 +99,7 @@ class LazyTest extends BaseTest
 
     public function testGetProxifiedObject()
     {
-        $x = new ResourceClasses\LazyX(new ResourceClasses\X(1, 2));
+        $x = ResourceClasses\LazyX::cgGet(new ResourceClasses\X(1, 2));
         ResourceClasses\X::$constructorCount = 0;
 
         $x2 = $x->createAnotherX()->createAnotherX();
@@ -72,7 +111,7 @@ class LazyTest extends BaseTest
 
     public function testLazyWithNoLazyEvaluation()
     {
-        $x = new ResourceClasses\LazyX2(new ResourceClasses\X2(1, 2));
+        $x = ResourceClasses\LazyX2::cgGet(new ResourceClasses\X2(1, 2));
 
         ResourceClasses\X::$constructorCount = 0;
 
@@ -83,7 +122,7 @@ class LazyTest extends BaseTest
 
     public function testLazyWithNoLazyMethods()
     {
-        $x = new ResourceClasses\LazyX2(new ResourceClasses\X2(1, 2));
+        $x = ResourceClasses\LazyX2::cgGet(new ResourceClasses\X2(1, 2));
 
         ResourceClasses\X::$constructorCount = 0;
 

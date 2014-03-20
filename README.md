@@ -1,7 +1,7 @@
 class-generator-for-php
 =======================
 
-Library for creating and autoloading classes for common patterns like decorator, null object, composite, lazy loading, proxy object (OOP framework)
+Library for creating and autoloading classes for common patterns like decorator, null object, composite, lazy loading, proxy object
 All generated classes can be cached so there is no relevant performance impact.
 
 Examples
@@ -30,7 +30,7 @@ class Book implements PriceInterface {
     }
 
     /**
-     * @return Tag[]
+     * @return \Tag[]
      */
     public function getTags() {
         return array_map(function($id) {return new Tag($id);}, $this->tagsIds);
@@ -64,6 +64,7 @@ NullObject:
 $book = new NullBook($id);
 //null object gets expected result type from phpDoc and returns proper empty value
 $book->getPrice(); // 0
+$book->getTags(); // array()
 $book->getAuthor(); // NullAuthor
 ```
 ___________
