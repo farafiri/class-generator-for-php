@@ -97,4 +97,17 @@ class AggregateFunctions
 
         return new $compositeName($collection);
     }
+
+    public function afThrow($collection, $error)
+    {
+        if (!$error) {
+            $error = '';
+        }
+
+        if ($error instanceof \Exception) {
+            $error = new \BadMethodCallException($error);
+        }
+
+        throw $error;
+    }
 } 
