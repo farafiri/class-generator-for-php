@@ -80,7 +80,9 @@ _____
 Lazy:
 
 ```php
-$book = new LazyBook(function() { return new Book($id); });
+$book = new LazyBook($id);
+//OR
+$book = new LazyBook::cgGet(function() { return new Book($id); });
 //no DB query performed yet
 $book->getPrice();
 //retrieved data from DB and proper price returned
@@ -89,7 +91,7 @@ $book->getPrice();
 Difference between lazy and lazyConstructor:
 ```php
 $lazyConstructorBook = new LazyConstructorBook($id); //no DB query performed yet
-$lazyBook = new LazyBook(function() use($id) { return new Book($id); }); //no DB query performed yet
+$lazyBook = new LazyBook($id); //no DB query performed yet
 
 $author1 = $lazyConstructorBook->getAuthor(); // 2 queries performed (book and author)
 $author2 = $lazyBook->getAuthor(); // still no queries performed (LazyAuthor returned)
