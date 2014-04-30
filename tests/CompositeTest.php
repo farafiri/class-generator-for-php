@@ -278,9 +278,9 @@ class CompositeTest extends BaseTest
         $resultOfCreateAnotherX = $composite->createAnotherX();
         $this->assertTrue($resultOfCreateAnotherX instanceof ResourceClasses\CompositeX);
         $this->assertEquals(array(
-            new ResourceClasses\X(3, -1),
-            new ResourceClasses\X(7, -1),
-            new ResourceClasses\X(11, -1),
+            new ResourceClasses\X(11, 102),
+            new ResourceClasses\X(13, 104),
+            new ResourceClasses\X(15, 106),
         ), $resultOfCreateAnotherX->cgGetChildren());
     }
 

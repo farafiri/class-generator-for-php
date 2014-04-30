@@ -37,8 +37,8 @@ class LazyTest extends BaseTest
 
         $x2 = $x->createAnotherX();
 
-        $this->assertEquals(3, $x2->getA());
-        $this->assertEquals(-1, $x2->getB());
+        $this->assertEquals(11, $x2->getA());
+        $this->assertEquals(102, $x2->getB());
     }
 
     /**
@@ -55,8 +55,8 @@ class LazyTest extends BaseTest
 
         $x2 = $x->createAnotherX();
 
-        $this->assertEquals(3, $x2->getA());
-        $this->assertEquals(-1, $x2->getB());
+        $this->assertEquals(11, $x2->getA());
+        $this->assertEquals(102, $x2->getB());
     }
 
     /**
@@ -73,8 +73,8 @@ class LazyTest extends BaseTest
 
         $x2 = $x->createAnotherX();
 
-        $this->assertEquals(3, $x2->getA());
-        $this->assertEquals(-1, $x2->getB());
+        $this->assertEquals(11, $x2->getA());
+        $this->assertEquals(102, $x2->getB());
     }
 
     public function testLazyWithConstructorCallCount()
@@ -85,8 +85,8 @@ class LazyTest extends BaseTest
         $x2 = $x->createAnotherX()->createAnotherX()->createAnotherX()->createAnotherX();
 
         $this->assertEquals(0, ResourceClasses\X::$constructorCount);
-        $this->assertEquals(4, $x2->getA());
-        $this->assertEquals(8, $x2->getB());
+        $this->assertEquals(41, $x2->getA());
+        $this->assertEquals(402, $x2->getB());
         $this->assertEquals(5, ResourceClasses\X::$constructorCount);
     }
 
@@ -98,8 +98,8 @@ class LazyTest extends BaseTest
         $x2 = $x->createAnotherX()->createAnotherX()->createAnotherX()->createAnotherX();
 
         $this->assertEquals(0, ResourceClasses\X::$constructorCount);
-        $this->assertEquals(4, $x2->getA());
-        $this->assertEquals(8, $x2->getB());
+        $this->assertEquals(41, $x2->getA());
+        $this->assertEquals(402, $x2->getB());
         //here is difference between testGeneratorLazy() and testLazy() because creating first object is also delayed
         $this->assertEquals(5, ResourceClasses\X::$constructorCount);
     }
@@ -112,8 +112,8 @@ class LazyTest extends BaseTest
         $x2 = $x->createAnotherX()->createAnotherX()->createAnotherX()->createAnotherX();
 
         $this->assertEquals(0, ResourceClasses\X::$constructorCount);
-        $this->assertEquals(4, $x2->getA());
-        $this->assertEquals(8, $x2->getB());
+        $this->assertEquals(41, $x2->getA());
+        $this->assertEquals(402, $x2->getB());
         $this->assertEquals(4, ResourceClasses\X::$constructorCount);
     }
 

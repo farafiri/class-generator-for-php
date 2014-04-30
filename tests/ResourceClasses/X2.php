@@ -12,7 +12,7 @@ class X2 extends X
      */
     public function createAnotherXWithoutLazyEvaluation()
     {
-        return new self($this->getA() + $this->getB(), $this->getA() - $this->getB());
+        return new self($this->getA() + 10, $this->getB() + 100);
     }
 
     /**
@@ -22,6 +22,6 @@ class X2 extends X
      */
     public function createAnotherXWithoutLazyMethods()
     {
-        return new self($this->getA() + $this->getB(), $this->getA() - $this->getB());
+        return new self($this->getA() + 10, $this->getB() + 100);
     }
 }

@@ -55,7 +55,11 @@ class DiscountDecorator extends ClassGenerator\BaseDecorator {
 }
 
 $book = new DecorableBook($id);
+$book->getPrice(); // 100
 $book->cgDecorate(new DiscountDecorator(0.9));
+$book->getPrice(); // 90
+
+$book instanceof Book //return true
 ```
 ___________
 NullObject:

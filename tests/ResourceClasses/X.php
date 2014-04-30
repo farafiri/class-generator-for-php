@@ -42,7 +42,7 @@ class X implements XInterface
      */
     public function createAnotherX()
     {
-        return new self($this->getA() + $this->getB(), $this->getA() - $this->getB());
+        return new self($this->getA() + 10, $this->getB() + 100);
     }
 
     /**
