@@ -1,7 +1,7 @@
 {
     "name" : "farafiri/class-generator-for-php",
     "description" : "Library for creating and autoloading classes for common patterns like decorator, null object, composite, lazy loading, proxy object",
-    "licence" : "MIT",
+    "license" : "MIT",
     "require" : {
         "php": ">=5.3.0"
     },
