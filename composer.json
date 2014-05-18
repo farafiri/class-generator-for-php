@@ -1,4 +1,5 @@
 {
+    "name" : "farafiri/class-generator-for-php",
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
     },
