@@ -11,7 +11,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     static public function setUpBeforeClass()
     {
         if (!self::$loader) {
-            self::$loader = \ClassGenerator\Autoloader::getInstance()->setCachePatch(__DIR__ . DIRECTORY_SEPARATOR . 'cache')->register();
+            self::$loader = \ClassGenerator\Autoloader::getInstance()->setCachePath(__DIR__ . DIRECTORY_SEPARATOR . 'cache')->register();
             self::$generator = self::$loader->getGenerator();
         }
     }

@@ -11,7 +11,7 @@ if (interface_exists($baseClass)) {
     public function __construct({{parametersDefinition}})
     {
         $this->cgProxifiedObjectConstructorParameters = array({{parameters}});
-        $this->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
+        $this->cgLazyProxyCreator = \ClassGenerator\Autoloader::getInstance()->getGenerator();
         $this->cgLazyProxySettings = static::$defaultLazyProxySettings;
         $this->cgLazyMethods = true;
     }
@@ -73,7 +73,7 @@ if (interface_exists($baseClass)) {
         if ($lazyProxyCreator) {
             $that->cgLazyProxyCreator = $lazyProxyCreator;
         } else {
-            $that->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
+            $that->cgLazyProxyCreator = \ClassGenerator\Autoloader::getInstance()->getGenerator();;
         }
 
         $that->cgLazyProxySettings = static::$defaultLazyProxySettings;
@@ -112,7 +112,7 @@ if (interface_exists($baseClass)) {
 
     public function __wakeup()
     {
-        $this->cgLazyProxyCreator = \ClassGenerator\GeneratorAggregator::getInstance();
+        $this->cgLazyProxyCreator = \ClassGenerator\Autoloader::getInstance()->getGenerator();
     }
 
     <?php if (in_array('Serializable', class_implements($baseClass))) { ?>

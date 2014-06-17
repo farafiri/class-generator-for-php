@@ -5,8 +5,6 @@ namespace ClassGenerator;
 
 class GeneratorAggregator
 {
-    protected static $instance;
-
     protected $generators;
 
     /**
@@ -34,15 +32,6 @@ class GeneratorAggregator
         foreach($this->generators as $generator) {
             $generator->setGeneratorAggregator($this);
         }
-    }
-
-    public static function getInstance()
-    {
-        if (empty(self::$instance)) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
     }
 
     public function getGenerators()

@@ -37,8 +37,7 @@ class Autoloader
     }
 
     /**
-     * @param string  $cachePath   if this path will be set with $enableCache = false then class will be saved in file
-     * @param boolean $enableCache
+     * @return ]ClassGenerator\Autoloader
      */
     public function getInstance()
     {
@@ -50,11 +49,19 @@ class Autoloader
     }
 
     /**
+     * @return ]ClassGenerator\Autoloader $instance
+     */
+    static public function setInstance($instance)
+    {
+        self::$instance = $instance;
+    }
+
+    /**
      * @param string $cachePath
      *
      * @return self
      */
-    public function setCachePatch($cachePath)
+    public function setCachePath($cachePath)
     {
         $this->cachePath = $cachePath;
         return $this;
@@ -63,7 +70,7 @@ class Autoloader
     /**
      * @return string
      */
-    public function getCachePatch()
+    public function getCachePath()
     {
         return $this->cachePath;
     }
@@ -94,8 +101,6 @@ class Autoloader
     {
         return $this->generator;
     }
-
-
 
     /**
      * @param \ClassGenerator\GeneratorAggregator $generator
