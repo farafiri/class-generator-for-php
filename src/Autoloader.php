@@ -39,7 +39,7 @@ class Autoloader
     /**
      * @return ]ClassGenerator\Autoloader
      */
-    public function getInstance()
+    static public function getInstance()
     {
         if (empty(self::$instance)) {
             self::$instance = new self();
