@@ -122,13 +122,17 @@ ______
 Set up
 ------
 
-All what you have to do is calling \ClassGenerator\Autoloader::register
+At first add into require in your composer.json: "farafiri/class-generator-for-php": "dev-master"
+
+Next call \ClassGenerator\Autoloader::register in your code
 
 ```php
 \ClassGenerator\Autoloader::getInstance()->register();
 //this is not a Singleton (you can create instance with new ..., also method setInstance is available)
 //but i need instance getter and I don't want make this code DI container dependent
 ```
+
+If you are using Symfony 2 check Doctrine\README.md
 
 This autoloader is not standalone - it wont load any classes from your php files, you need another loader for this task.
 It should be registered as last loader - otherwise it will create new class instead of loading it from your project files. (For example: if you have class \Item and \NullItem then on attempt to use \NullItem it will generate new class instead of loading your implementation)
@@ -138,6 +142,7 @@ To turn cache on:
 \ClassGenerator\Autoloader::getInstance()->setCachePath($cacheDirectoryPath)->setEnabledCache(true);
 ```
 Its good to set $cachePath even if cache is not enabled - created classes will be saved and loaded from filesystem instead of simple code eval.
-Thanks to this in case of error error message will look like "Error in cacheFile.php on line X" instead of "Error in eval code".
+Thanks to this in case of error error message will look like "Error in cacheFile.php on line X" instead of "Error in eval code" + your IDE should
+recognize these classes while they are in files.
 
 
