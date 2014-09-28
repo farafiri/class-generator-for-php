@@ -44,6 +44,10 @@ class GeneratorAggregator
         $this->generators = $generators;
     }
 
+    public function addGenerator($generator, $index = null) {
+        $this->generators[$index] = $generator;
+    }
+
     public function setAcceptedNamespaces($acceptedNamespaces)
     {
         $this->acceptedNamespaces = $acceptedNamespaces;

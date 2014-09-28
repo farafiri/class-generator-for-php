@@ -37,7 +37,7 @@ class Autoloader
     }
 
     /**
-     * @return ]ClassGenerator\Autoloader
+     * @return \ClassGenerator\Autoloader
      */
     static public function getInstance()
     {
@@ -49,7 +49,7 @@ class Autoloader
     }
 
     /**
-     * @return ]ClassGenerator\Autoloader $instance
+     * @param \ClassGenerator\Autoloader $instance
      */
     static public function setInstance($instance)
     {
