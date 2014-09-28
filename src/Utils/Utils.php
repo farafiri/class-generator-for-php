@@ -10,10 +10,41 @@ namespace ClassGenerator\Utils;
 
 
 class Utils {
+    protected static $phpDocTypes = array(
+        'int' => 1,
+        'integer' => 1,
+        'bool' => 1,
+        'boolean' => 1,
+        'float' => 1,
+        'double' => 1,
+        'callback' => 1,
+        'array' => 1,
+        'object' => 1,
+        'string' => 1,
+        'null' => 1,
+        'true' => 1,
+        'false' => 1,
+        'self' => 1);
+
+    protected static $classNameResolver;
+
     protected static $defaultMethodLazyOptions = array(
         'isLazyEvaluated' => false,
         'isLazyMethods' => false
     );
+
+    public static function getRealType($type, $classContext) {
+        if (empty(self::$classNameResolver)) {
+            self::$classNameResolver = new RealClassNameResolver(new UseGetter());
+        }
+
+        $docTypes = self::$phpDocTypes;
+        $classNameResolver = self::$classNameResolver;
+        return preg_replace_callback('/[a-zA-Z0-9\\\\]+/', function($a) use ($docTypes, $classContext, $classNameResolver) {
+            $a = $a[0];
+            return empty($docTypes[$a]) ? '\\' . $classNameResolver->resolve($a, $classContext, true) : $a;
+        }, $type);
+    }
 
     public static function getDocAttribute(\ReflectionMethod $reflectionMethod, $attributeName)
     {
@@ -28,7 +59,7 @@ class Utils {
         $docReturn = self::getDocAttribute($reflectionMethod, 'returns?');
         if ($docReturn) {
             preg_match('/(.*?)\s.*/', $docReturn . ' ', $matches);
-            return $matches[1];
+            return self::getRealType($matches[1], $reflectionMethod->getDeclaringClass()->getName());
         }
 
         if ($reflectionMethod->getName() === 'serialize' || $reflectionMethod->getName() === '__toString') {
