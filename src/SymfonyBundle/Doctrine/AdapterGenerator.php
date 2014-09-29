@@ -51,7 +51,7 @@ class AdapterGenerator {
             }
         }
 
-        $code = $this->generator->generateEntityClass($metadata);
+        $code = $metadata ? $this->generator->generateEntityClass($metadata) : '';
 
         if (strpos($code, '<?php') == 0) {
             $code = substr($code, 5);
