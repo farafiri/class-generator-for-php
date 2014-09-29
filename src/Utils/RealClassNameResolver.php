@@ -26,6 +26,7 @@ class RealClassNameResolver
         if (isset($uses[$className])) {
             return $uses[$className];
         }
+        // @TODO add PartialNamespace\ClassName support
 
         $namespaceClassName = $this->getNamespace($contextClassName) . '\\' . $className;
         if ($nonNamespaceClassMustStartWithBackslash || class_exists($namespaceClassName) || interface_exists($namespaceClassName)) {

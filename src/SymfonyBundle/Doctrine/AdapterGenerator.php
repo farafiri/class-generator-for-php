@@ -6,7 +6,7 @@
  * Time: 11:01
  */
 
-namespace ClassGenerator\Doctrine;
+namespace ClassGenerator\SymfonyBundle\Doctrine;
 
 class AdapterGenerator {
     protected $generator;

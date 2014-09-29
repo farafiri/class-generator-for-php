@@ -6,8 +6,9 @@
  * Time: 11:01
  */
 
-namespace ClassGenerator\Doctrine;
+namespace ClassGenerator\SymfonyBundle\Doctrine;
 
 
 class Generator extends \Doctrine\ORM\Tools\EntityGenerator{
+    protected $fullEntityNameOnSettersReturnAnnotation = true;
 } 
