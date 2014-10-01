@@ -50,6 +50,8 @@ class GeneratorAggregator
         } else {
             $this->generators[$index] = $generator;
         }
+
+        return $this;
     }
 
     public function setAcceptedNamespaces($acceptedNamespaces)

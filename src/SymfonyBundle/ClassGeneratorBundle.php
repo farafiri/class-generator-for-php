@@ -21,7 +21,10 @@ class ClassGeneratorBundle extends \Symfony\Component\HttpKernel\Bundle\Bundle {
             ->register();
 
         $manager = new \Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory($this->container->get('doctrine'));
-        $doctrineEntityAutoloader = new Doctrine\AdapterGenerator($manager);
-        $autoloader->getGenerator()->addGenerator($doctrineEntityAutoloader);
+        $autoloader->getGenerator()
+            ->addGenerator(new Doctrine\Adapter($manager))
+            ->addGenerator(new Doctrine\BaseAdapter($manager))
+            ->addGenerator(new Doctrine\TraitAdapter($manager))
+            ->addGenerator(new Doctrine\InterfaceAdapter($manager));
     }
 }

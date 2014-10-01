@@ -8,16 +8,21 @@
 
 namespace ClassGenerator\SymfonyBundle\Doctrine;
 
-class AdapterGenerator {
+abstract class AbstractAdapter {
+    const GENERATOR_CLASS = 'ClassGenerator\SymfonyBundle\Doctrine\Generator';
     protected $generator;
     protected $manager;
-    protected $namespaceInfix = 'Base';
 
     public function __construct($manager)
     {
         $this->manager = $manager;
 
-        $this->generator = new Generator();
+        $generator = static::GENERATOR_CLASS;
+        $this->generator = new $generator();
+        $this->standardGeneratorSetUp();
+    }
+
+    protected function standardGeneratorSetUp() {
         $this->generator->setGenerateAnnotations(false);
         $this->generator->setGenerateStubMethods(true);
         $this->generator->setRegenerateEntityIfExists(false);
@@ -33,25 +38,24 @@ class AdapterGenerator {
      */
     public function generateCodeFor($className)
     {
-        //var_dump(class_exists($className));
-
-        $metadataClassName = $className;
-        $metadata = $this->getClassMetadata($metadataClassName);
-        if ($metadata) {
-            $this->generator->setFieldVisibility(Generator::FIELD_VISIBLE_PRIVATE);
-        } else {
-            $metadataClassName = $this->getBaseClassName($className);
-            if ($metadataClassName && $metadata = $this->getClassMetadata($metadataClassName)) {
-                $this->generator->setFieldVisibility(Generator::FIELD_VISIBLE_PROTECTED);
-                $metadata->name = $className;
-                $metadata->namespace = implode('\\', array_slice(explode('\\', $className), 0, -1));
-                if ($metadata->rootEntityName === $metadataClassName) {
-                    $metadata->rootEntityName = $className;
-                }
+        //var_dump($this);
+        //echo "load[$className] in (" . get_class($this) . ')';
+        $metadata = null;
+        $metadataClassName = $this->getBaseClassName($className);
+        //var_dump($metadataClassName);
+        if ($metadataClassName && $metadata = $this->getClassMetadata($metadataClassName)) {
+            $metadata->name = $className;
+            $metadata->namespace = implode('\\', array_slice(explode('\\', $className), 0, -1));
+            if ($metadata->rootEntityName === $metadataClassName) {
+                $metadata->rootEntityName = $className;
             }
         }
 
-        $code = $metadata ? $this->generator->generateEntityClass($metadata) : '';
+        if (!$metadata) {
+            return null;
+        }
+
+        $code = $this->generator->generateEntityClass($metadata);
 
         if (strpos($code, '<?php') == 0) {
             $code = substr($code, 5);
@@ -68,13 +72,7 @@ class AdapterGenerator {
         return isset($metadata[0]) ? $metadata[0] : null;
     }
 
-    protected function getBaseClassName($className) {
-        if (preg_match('/^(.+)\\\\Base\\\\(.+)$/', $className, $match)) {
-            return $match[1] . '\\' . $match[2];
-        } else {
-            return null;
-        }
-    }
+    abstract protected function getBaseClassName($className);
 
     protected function getPath($className)
     {
