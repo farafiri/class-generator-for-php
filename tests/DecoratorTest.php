@@ -203,4 +203,13 @@ class DecoratorTest extends BaseTest
 
         $this->assertEquals(12, $decorable->getA());
     }
+
+    public function testDecoratorOnClassWithStatic()
+    {
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\DecoratorForClassWithStatic'));
+
+        $x = new ResourceClasses\DecoratorForClassWithStatic(new ResourceClasses\ClassWithStatic);
+
+        $this->assertTrue($x instanceof ResourceClasses\ClassWithStatic);
+    }
 }

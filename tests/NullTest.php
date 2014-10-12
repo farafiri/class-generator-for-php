@@ -72,4 +72,13 @@ class NullTest extends BaseTest
         $this->setExpectedException('BadFunctionCallException');
         $x->getB();
     }
+
+    public function testNullOnClassWithStatic()
+    {
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\NullClassWithStatic'));
+
+        $x = new ResourceClasses\NullClassWithStatic();
+
+        $this->assertTrue($x instanceof ResourceClasses\ClassWithStatic);
+    }
 }
