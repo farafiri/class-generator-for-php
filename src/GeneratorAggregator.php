@@ -27,6 +27,7 @@ class GeneratorAggregator
             'decorator' => new SimpleClassGenerator('DecoratorFor*', $templateClassCodeGenerator),
             'decorable' => new SimpleClassGenerator('Decorable*', $templateClassCodeGenerator),
             'composite' =>  new SimpleClassGenerator('Composite*', $templateClassCodeGenerator),
+            'exposeTrait' =>  new SimpleClassGenerator('*ExposeTrait', $templateClassCodeGenerator),
         );
 
         foreach($this->generators as $generator) {

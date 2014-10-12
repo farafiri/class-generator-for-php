@@ -59,4 +59,9 @@ class X implements XInterface
             $this->a = clone $this->a;
         }
     }
+
+    public function dummyMethod()
+    {
+        return null;
+    }
 }
