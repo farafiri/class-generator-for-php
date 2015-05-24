@@ -3,8 +3,17 @@
 class {{newClassName}} <?php
 $interfaces = '\\' . $generatorNamespace . '\\Interfaces\\Generated, \\' . $generatorNamespace . '\\Interfaces\\Decorator';
 if (interface_exists($baseClass)) {
-    echo 'implements \\' . $baseClass . ', ' . $interfaces;
+    $addIteratorAggregatorInterface = (in_array('Traversable', class_implements($baseClass)) || $baseClass === 'Traversable') &&
+                                      !(in_array('Iterator', class_implements($baseClass)) || $baseClass === 'Iterator') &&
+                                      !(in_array('IteratorAggregate', class_implements($baseClass)) || $baseClass === 'IteratorAggregate');
+
+    if ($addIteratorAggregatorInterface) {
+        echo 'implements \\IteratorAggregate , ' . $interfaces;
+    } else {
+        echo 'implements \\' . $baseClass . ', ' . $interfaces;
+    }
 } else {
+    $addIteratorAggregatorInterface = false;
     echo 'extends \\' . $baseClass . ' implements ' . $interfaces;
 } ?>
 {
@@ -20,6 +29,19 @@ if (interface_exists($baseClass)) {
     {
         $this->cgSetDecorated($decorated);
     }
+
+    <?php if ($addIteratorAggregatorInterface) { ?>
+    /**
+     * @return \Traversable
+     */
+    public function getIterator() {
+        if ($this->cgDecorated instanceof \Iterator) {
+            return $this->cgDecorated;
+        } else {
+            return $this->cgDecorated->getIterator();
+        }
+    }
+    <?php } ?>
 
     /**
      * @return \{{baseClass}}|\ClassGenerator\BaseDecorator

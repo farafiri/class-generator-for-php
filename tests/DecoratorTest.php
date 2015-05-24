@@ -212,4 +212,23 @@ class DecoratorTest extends BaseTest
 
         $this->assertTrue($x instanceof ResourceClasses\ClassWithStatic);
     }
+
+    /**
+     * @dataProvider withProvider
+     * @testWith ('DecoratorForTraversable',       'ClassGenerator\tests\ResourceClasses\Iterator')
+     *           ('DecoratorForTraversable',       'ClassGenerator\tests\ResourceClasses\IteratorAggregate')
+     *           ('DecoratorForIterator',          'ClassGenerator\tests\ResourceClasses\Iterator')
+     *           ('DecoratorForIteratorAggregate', 'ClassGenerator\tests\ResourceClasses\IteratorAggregate')
+     */
+    public function testDecoratorForTraversableWithIterator($decorator, $decorated)
+    {
+        $x = new $decorator(new $decorated(3, 10));
+        $result = array();
+
+        foreach($x as $value) {
+            $result[] = $value;
+        }
+
+        $this->assertEquals(array(10, 10, 10), $result);
+    }
 }

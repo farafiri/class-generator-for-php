@@ -9,6 +9,7 @@
 namespace ClassGenerator\SymfonyBundle\Doctrine;
 
 
-class Generator extends \Doctrine\ORM\Tools\EntityGenerator{
+class Generator extends \Doctrine\ORM\Tools\EntityGenerator {
     protected $fullEntityNameOnSettersReturnAnnotation = true;
+    protected $fieldVisibility = self::FIELD_VISIBLE_PROTECTED;
 } 

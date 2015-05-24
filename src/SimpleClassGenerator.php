@@ -3,13 +3,11 @@
 namespace ClassGenerator;
 
 
-class SimpleClassGenerator
+class SimpleClassGenerator extends BaseClassGenerator
 {
     protected $classNamePattern;
     protected $regexPatterns = null;
-    protected $templateClassGenerator;
     protected $template = null;
-    protected $generatorAggregator = null;
 
     public function __construct($classNamePattern, $templateClassGenerator)
     {
@@ -30,33 +28,13 @@ class SimpleClassGenerator
         return $this->regexPatterns;
     }
 
-    static public function getTemplateFile($classNamePattern)
+    static public function getSTemplateFile($classNamePattern)
     {
         return  __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . str_replace('*', '_', $classNamePattern) . '.tpl';
     }
 
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-    }
-
-    public function getTemplate()
-    {
-        if (!isset($this->template)) {
-            $this->template = file_get_contents(static::getTemplateFile($this->classNamePattern));
-        }
-
-        return $this->template;
-    }
-
-    public function setGeneratorAggregator($aggregator)
-    {
-        $this->generatorAggregator = $aggregator;
-    }
-
-    public function getGeneratorAggregator()
-    {
-        return $this->generatorAggregator;
+    public function getTemplateFile() {
+        return static::getSTemplateFile($this->classNamePattern);
     }
 
     /**
