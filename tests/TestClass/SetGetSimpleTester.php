@@ -8,9 +8,9 @@
 
 namespace ClassGenerator\tests\TestClass;
 
-use ClassGenerator\SetGet;
+use ClassGenerator\Property;
 
 class SetGetSimpleTester {
-    use SetGet\Name;
-    use SetGet\Title;
+    use Property\Name;
+    use Property\Title;
 }

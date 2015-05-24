@@ -6,14 +6,13 @@
  * Time: 12:27
  */
 
-class SetGetTest extends BaseTest {
+class PropertyTest extends BaseTest {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\SetGet\Name')
+     * @testWith ('ClassGenerator\Property\Name')
      */
     public function testTraitGenerated($traitName) {
         $this->assertTrue(trait_exists($traitName, true));
-        //var_dump(get_declared_traits());
     }
 
     public function testUsingClassLoad() {

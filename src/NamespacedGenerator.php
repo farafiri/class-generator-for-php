@@ -39,7 +39,7 @@ class NamespacedGenerator extends BaseClassGenerator {
                 'full' => $className,
                 'part' => $rest,
                 'parts' => $sRest,
-                'head' => $sRest[0],
+                'head' => lcfirst($sRest[0]),
                 'newClassName' => $sClassName[count($sClassName) - 1],
                 'newClassNamespace' => implode('\\', array_slice($sClassName, 0, -1)),
                 'prefix' => $this->getPrefix(),

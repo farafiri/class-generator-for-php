@@ -28,7 +28,8 @@ class GeneratorAggregator
             'decorable' => new SimpleClassGenerator('Decorable*', $templateClassCodeGenerator),
             'composite' =>  new SimpleClassGenerator('Composite*', $templateClassCodeGenerator),
             'exposeTrait' =>  new SimpleClassGenerator('*ExposeTrait', $templateClassCodeGenerator),
-            'SetGet' => new SetGet(new GeneralTemplateClassCodeGenerator()),
+            'Property' => new Property(new GeneralTemplateClassCodeGenerator()),
+            'DoctrineCollection' => new DoctrineCollection(new GeneralTemplateClassCodeGenerator())
         );
 
         foreach($this->generators as $generator) {

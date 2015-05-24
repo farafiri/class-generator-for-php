@@ -3,12 +3,12 @@
  * Created by PhpStorm.
  * User: Rafał
  * Date: 24.05.15
- * Time: 12:19
+ * Time: 19:36
  */
 
 namespace ClassGenerator;
 
 
-class SetGet extends NamespacedGenerator {
+class DoctrineCollection extends NamespacedGenerator {
 
 } 
