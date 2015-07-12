@@ -12,7 +12,9 @@ class ExposeTraitTest extends BaseTest {
     /**
      * @dataProvider withProvider
      * @testWith ('ClassGenerator\tests\ResourceClasses\ExposeTraitTester', true)
+     *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester', true)
      *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitInterfaceTester', false)
+     *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitInterfaceTester', false)
      */
     public function testBaseClass($testedClass, $haveDummyMethod) {
         $exposedObject = new ResourceClasses\X(101, 102);
