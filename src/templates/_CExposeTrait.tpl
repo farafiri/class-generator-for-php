@@ -6,6 +6,10 @@
   if (substr($exposed, -strlen($interfaceLiteral)) === $interfaceLiteral) {
       $exposed = substr($exposed, 0, -strlen($interfaceLiteral));
   }
+
+  if (!empty($methods)) {
+      $exposed = $methods;
+  }
 ?>
 
 trait {{newClassName}}

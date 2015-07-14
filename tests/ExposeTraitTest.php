@@ -13,6 +13,7 @@ class ExposeTraitTest extends BaseTest {
      * @dataProvider withProvider
      * @testWith ('ClassGenerator\tests\ResourceClasses\ExposeTraitTester', true)
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester', true)
+     *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitWithMethodTemplateNameTester', true)
      *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitInterfaceTester', false)
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitInterfaceTester', false)
      */

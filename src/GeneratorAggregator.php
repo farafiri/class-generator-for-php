@@ -27,7 +27,7 @@ class GeneratorAggregator
             'decorator' => new SimpleClassGenerator('DecoratorFor*', $templateClassCodeGenerator),
             'decorable' => new SimpleClassGenerator('Decorable*', $templateClassCodeGenerator),
             'composite' =>  new SimpleClassGenerator('Composite*', $templateClassCodeGenerator),
-            'cExposeTrait' =>  new SimpleClassGenerator('*CExposeTrait', $templateClassCodeGenerator),
+            'cExposeTrait' =>  new SimpleClassGenerator('*CExposeTrait', $templateClassCodeGenerator, array('Methods')),
             'exposeTrait' =>  new SimpleClassGenerator('*ExposeTrait', $templateClassCodeGenerator),
             'Property' => new Property(new GeneralTemplateClassCodeGenerator()),
             'DoctrineCollection' => new DoctrineCollection(new GeneralTemplateClassCodeGenerator())
