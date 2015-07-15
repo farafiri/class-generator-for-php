@@ -36,12 +36,20 @@ class ExposeTraitTest extends BaseTest {
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\FixedParamsOff', array())
      */
     public function testFixedParameters($variant, $expectedParams) {
-        /**if ($variant == 'ClassGenerator\tests\ResourceClasses\CExposeTraitTester\FixedParametersOn') {
-            $this->assertEquals($expectedParams, array(30));
-        } else {
-            $this->assertEquals($expectedParams, array());
-        }*/
         $o = new $variant();
         $this->assertEquals($expectedParams, $o->setA());
+    }
+
+    /**
+     * @dataProvider withProvider
+     * @testWith ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\BaseTester', true)
+     *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\RefMethods', false)
+     */
+    public function testRefMethod($variant, $methodExists) {
+        $o = new $variant(new ResourceClasses\X(0, 0));
+        $this->assertEquals($methodExists, method_exists($o, 'cgExposedX'));
+        $this->assertEquals($methodExists, method_exists($o, 'cgExposedGetX'));
+        $this->assertEquals($methodExists, method_exists($o, 'cgExposedMapX'));
+        $this->assertEquals($methodExists, method_exists($o, 'cgExposedOnEmptyX'));
     }
 } 

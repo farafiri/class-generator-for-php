@@ -1,4 +1,5 @@
 <?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : '';
+  $generateCgMethods = true;
   $baseClassExploded = explode('\\', $baseClass);
   $exposed = ucfirst(array_pop($baseClassExploded));
   $interfaceLiteral = 'Interface';
@@ -10,10 +11,16 @@
   if (!empty($methods)) {
       $exposed = $methods;
   }
+
+  if (!empty($refMethods)) {
+      $exposed = $methods;
+      $generateCgMethods = false;
+  }
 ?>
 
 trait {{newClassName}}
 {
+    <?php if ($generateCgMethods) { ?>
     protected function {{prefix}}{{exposed}}($methodName, $params) {
         $o = $this->{{prefix}}Get{{exposed}}($methodName, $params);
         if ($o) {
@@ -34,6 +41,7 @@ trait {{newClassName}}
     protected function {{prefix}}OnEmpty{{exposed}}($methodName, $params) {
         return null;
     }
+    <?php } ?>
 
 {{method}}
 <?php if (substr($methodName, 0, 2) === '__') continue; ?>
