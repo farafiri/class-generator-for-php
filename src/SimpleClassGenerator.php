@@ -23,7 +23,7 @@ class SimpleClassGenerator extends BaseClassGenerator
         if (!$this->regexPatterns) {
             $genParams = '';
             foreach($this->genParams as $param) {
-                $genParams .= '((?:\\\\' . $param . '[A-Za-z0-9_]+)?)';
+                $genParams .= '((?:\\\\' . $param . '[A-Za-z0-9_]*)?)';
             }
 
             $e = explode('*', $this->classNamePattern);

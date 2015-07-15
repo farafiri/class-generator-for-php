@@ -40,7 +40,12 @@ trait {{newClassName}}
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {
-        return $this->{{prefix}}{{exposed}}('{{methodName}}', array({{parameters}}));
+        return $this->{{prefix}}{{exposed}}('{{methodName}}', <?php
+            if (isset($fixedParameters)) {
+                echo 'array(' . $parameters . ')';
+            } else {
+                echo 'func_get_args()';
+            }; ?>);
     }
 
 {{\method}}

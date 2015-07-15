@@ -16,7 +16,7 @@ class X implements XInterface
         self::$constructorCount++;
     }
 
-    public function setA($a)
+    public function setA($a = 30)
     {
         $this->a = $a;
     }

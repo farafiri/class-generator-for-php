@@ -6,11 +6,11 @@
  * Time: 21:46
  */
 
-namespace ClassGenerator\tests\ResourceClasses;
+namespace ClassGenerator\tests\ResourceClasses\CExposeTraitTester;
 
 
-class CExposeTraitWithMethodTemplateNameTester {
-    use XCExposeTrait\MethodsYY;
+class MethodTemplateName {
+    use \ClassGenerator\tests\ResourceClasses\XCExposeTrait\MethodsYY;
 
     protected $x;
 

@@ -3,20 +3,17 @@
  * Created by PhpStorm.
  * User: Rafał
  * Date: 05.10.14
- * Time: 14:58
+ * Time: 14:29
  */
 
-namespace ClassGenerator\tests\ResourceClasses;
+namespace ClassGenerator\tests\ResourceClasses\CExposeTraitTester;
 
 
-class CExposeTraitInterfaceTester {
-    use XInterfaceCExposeTrait;
+class BaseTester {
+    use \ClassGenerator\tests\ResourceClasses\XCExposeTrait;
 
     protected $x;
 
-    /**
-     * Interface should be excluded from getter name
-     */
     public function getX() {
         return $this->x;
     }
@@ -24,4 +21,4 @@ class CExposeTraitInterfaceTester {
     public function __construct($x) {
         $this->x = $x;
     }
-} 
+}
