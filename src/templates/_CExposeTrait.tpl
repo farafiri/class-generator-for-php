@@ -13,7 +13,7 @@
   }
 
   if (!empty($refMethods)) {
-      $exposed = $methods;
+      $exposed = $refMethods;
       $generateCgMethods = false;
   }
 ?>
