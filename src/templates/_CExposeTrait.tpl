@@ -44,7 +44,9 @@ trait {{newClassName}}
     <?php } ?>
 
 {{method}}
-<?php if (substr($methodName, 0, 2) === '__') continue; ?>
+<?php if (substr($methodName, 0, 2) === '__' ||
+          $methodName == 'getId' ||
+          $methodName == 'setId') continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {
