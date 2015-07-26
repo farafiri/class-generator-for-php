@@ -8,7 +8,6 @@
 
 namespace ClassGenerator\SymfonyBundle;
 
-
 class ClassGeneratorBundle extends \Symfony\Component\HttpKernel\Bundle\Bundle {
     protected $autoloader = null;
 
@@ -38,5 +37,10 @@ class ClassGeneratorBundle extends \Symfony\Component\HttpKernel\Bundle\Bundle {
             ->setCachePath($kernel->getCacheDir())
             ->setEnabledCache($kernel->getEnvironment() != 'dev')
             ->register();
+    }
+
+    public function build(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new DependencyInjection\Main());
     }
 }
