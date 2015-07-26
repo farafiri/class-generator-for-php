@@ -23,7 +23,7 @@ class SimpleClassGenerator extends BaseClassGenerator
         if (!$this->regexPatterns) {
             $genParams = '';
             foreach($this->genParams as $param) {
-                $genParams .= '((?:\\\\' . $param . '[A-Za-z0-9_]*)?)';
+                $genParams .= '((?:\\\\' . $param . '[A-Za-z0-9_]*)*)';
             }
 
             $e = explode('*', $this->classNamePattern);
@@ -92,8 +92,17 @@ class SimpleClassGenerator extends BaseClassGenerator
         $result = array();
         $index = 4;
         foreach($this->genParams as $param) {
-            $match = $matches[$index++];
-            $result[lcfirst($param)] = $match ? str_replace('\\' . $param, '', $match) : null;
+            $pmatches = $matches[$index++];
+            if ($pmatches) {
+                foreach(explode('\\', substr($pmatches, 1)) as $match) {
+                    $val = str_replace($param, '', $match);
+                    $result[lcfirst($param)] = $val;
+                    $result[lcfirst($param) . 'Arr'][] = $val;
+                }
+            } else {
+                $result[lcfirst($param)] = null;
+                $result[lcfirst($param) . 'Arr'] = array();
+            }
         }
 
         return $result;

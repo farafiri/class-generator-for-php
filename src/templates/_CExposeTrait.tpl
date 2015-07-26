@@ -4,6 +4,9 @@
   $exposed = ucfirst(array_pop($baseClassExploded));
   $interfaceLiteral = 'Interface';
   $prefix = 'cgExposed';
+  if (empty($noArr)) {
+      $noArr = array();
+  }
   if (substr($exposed, -strlen($interfaceLiteral)) === $interfaceLiteral) {
       $exposed = substr($exposed, 0, -strlen($interfaceLiteral));
   }
@@ -46,7 +49,8 @@ trait {{newClassName}}
 {{method}}
 <?php if (substr($methodName, 0, 2) === '__' ||
           $methodName == 'getId' ||
-          $methodName == 'setId') continue; ?>
+          $methodName == 'setId' ||
+          in_array(strtolower($methodName), array_map('strtolower', $noArr))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}})
     {

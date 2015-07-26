@@ -52,4 +52,16 @@ class ExposeTraitTest extends BaseTest {
         $this->assertEquals($methodExists, method_exists($o, 'cgExposedMapX'));
         $this->assertEquals($methodExists, method_exists($o, 'cgExposedOnEmptyX'));
     }
+
+    /**
+     * @dataProvider withProvider
+     * @testWith ('getA', false)
+     *           ('setA', true)
+     *           ('getB', true)
+     *           ('setB', false)
+     */
+    public function testNo($methodName, $methodExists) {
+        $o = new \ClassGenerator\tests\ResourceClasses\CExposeTraitTester\NoTester(new ResourceClasses\X(0, 0));
+        $this->assertEquals($methodExists, method_exists($o, $methodName));
+    }
 } 
