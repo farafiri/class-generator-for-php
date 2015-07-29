@@ -1,4 +1,5 @@
 <?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : '';
+  $defaultParamsList = '$a = null, $b = null, $c = null, $d = null, $e = null, $f = null';
   $generateCgMethods = true;
   $baseClassExploded = explode('\\', $baseClass);
   $exposed = ucfirst(array_pop($baseClassExploded));
@@ -52,7 +53,7 @@ trait {{newClassName}}
           $methodName == 'setId' ||
           in_array(strtolower($methodName), array_map('strtolower', $noArr))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}(<?php echo isset($fixedParameters) ? $parametersDefinition : $defaultParamsList; ?>)
     {
         return $this->{{prefix}}{{exposed}}('{{methodName}}', <?php
             if (isset($fixedParameters)) {
