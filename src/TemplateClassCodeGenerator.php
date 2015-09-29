@@ -21,6 +21,7 @@ class TemplateClassCodeGenerator
             $parameters = null;
         }
         $generatorNamespace = __NAMESPACE__;
+        //$reflectionMethods = $this->getMethods($reflectionClass, $extraData);
         $template = str_replace('{{method}}', '<?php foreach($reflectionClass->getMethods(\\ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
             $methodName = $reflectionMethod->getName();
             if ($methodName === "__construct" || $methodName === "__destruct") continue;

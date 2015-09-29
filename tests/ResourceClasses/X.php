@@ -64,4 +64,8 @@ class X implements XInterface
     {
         return null;
     }
+
+    public function getSumAB() {
+        return $this->getA() + $this->getB();
+    }
 }

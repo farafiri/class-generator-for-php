@@ -3,7 +3,7 @@
 namespace ClassGenerator;
 
 
-abstract class BaseDecorator implements Interfaces\Decorator
+abstract class BaseDecorator implements Interfaces\Decorator, Interfaces\CGThis
 {
     const CG_DECORATED = false;
 
@@ -11,6 +11,11 @@ abstract class BaseDecorator implements Interfaces\Decorator
      * @var object
      */
     protected $cgDecorated;
+
+    /**
+     * @var object
+     */
+    protected $cgThis;
 
     /**
      * @param object $object
@@ -36,7 +41,8 @@ abstract class BaseDecorator implements Interfaces\Decorator
     public function cgSetDecorated($decorated)
     {
         if (!$this->cgCanBeDecorated($decorated)) {
-            throw new Exceptions\Proxy("Cannot decorate " . get_class($decorated) . " with " . get_class($this). ' decorator');
+            $given = $decorated ? 'null' : get_class($decorated);
+            throw new Exceptions\Proxy("Cannot decorate " . get_class($decorated) . " with " . get_class($this). ' decorator. ' . $given . ' given.');
         }
 
         $this->cgDecorated = $decorated;
@@ -48,6 +54,26 @@ abstract class BaseDecorator implements Interfaces\Decorator
     public function cgGetDecorated()
     {
         return $this->cgDecorated;
+    }
+
+    /**
+     * @param object $decorated
+     */
+    public function cgSetThis($cgThis)
+    {
+        if (!$this->cgCanBeDecorated($cgThis)) {
+            throw new Exceptions\Proxy("Cannot decorate " . get_class($cgThis) . " with " . get_class($this). ' decorator');
+        }
+
+        $this->cgThis = $cgThis;
+    }
+
+    /**
+     * @return object|null
+     */
+    public function cgGetThis()
+    {
+        return $this->cgThis;
     }
 
     /**
@@ -67,7 +93,14 @@ abstract class BaseDecorator implements Interfaces\Decorator
     {
         $that = $this->cgGetDecorated() ? clone $this: $this;
 
-        if ($object instanceof Interfaces\Decorator) {
+        if ($object instanceof Interfaces\Extendable) {
+            $that->cgSetDecorated($object->cgGetDecorated());
+            $object->cgSetDecorated($that);
+            if ($object->cgGetLastDecorated() === $object) {
+                $object->cgSetLastDecorated($this);
+            }
+            return $object;
+        } if ($object instanceof Interfaces\Decorator) {
             $that->cgSetDecorated($object->cgGetDecorated());
             $object->cgSetDecorated($that);
             return $object;
@@ -77,6 +110,26 @@ abstract class BaseDecorator implements Interfaces\Decorator
             $decoratorClassName = implode('\\', $className);
             $that->cgSetDecorated($object);
             return new $decoratorClassName($that);
+        }
+    }
+
+    public function cgExtend($object) {
+        $that = $this->cgGetDecorated() ? clone $this: $this;
+
+        if ($object instanceof Interfaces\Extendable) {
+            $ld = $object->cgGetLastDecorated();
+            $firstExtend = $ld->cgGetDecorated();
+            $ld->cgSetDecorated($that);
+            $that->cgSetDecorated($firstExtend);
+            $decorator = $that;
+            while($decorator) {
+                if ($decorator instanceof Interfaces\CGThis) {
+                    $decorator->cgSetThis($that);
+                }
+                $decorator = $decorator instanceof Interfaces\Decorator ? $decorator->cgGetDecorated() : null;
+            }
+        } else {
+            throw new Exceptions\Proxy('cgExtended argument bust be instance of Extendable');
         }
     }
 

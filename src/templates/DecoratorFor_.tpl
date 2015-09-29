@@ -72,7 +72,9 @@ if (interface_exists($baseClass)) {
      */
     public function cgSetDecorated($decorated)
     {
-        if ($decorated instanceof \{{baseClass}} || $decorated instanceof \ClassGenerator\BaseDecorator) {
+        if ($decorated instanceof \{{baseClass}} ||
+            $decorated instanceof \ClassGenerator\BaseDecorator ||
+            $decorated instanceof \ClassGenerator\Interfaces\Redirect) {
             $this->cgDecorated = $decorated;
         } else {
             throw new \InvalidArgumentException('Argument to {{newClass}}::cgSetDecorated must be instanceof {{baseClass}} or \ClassGenerator\BaseDecorator');
