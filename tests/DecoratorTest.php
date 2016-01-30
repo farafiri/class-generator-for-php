@@ -231,4 +231,16 @@ class DecoratorTest extends BaseTest
 
         $this->assertEquals(array(10, 10, 10), $result);
     }
+
+    public function testWithMethodOverriding() {
+        $decorated = new ResourceClasses\X(123, 234);
+        $decorator = new ResourceClasses\MethodOverridedDecoratorForX(array(
+            'getA' => function() {return parent::getA() + 1;}
+        ), $decorated);
+
+        $this->assertEquals(234, $decorator->getB());
+        $this->assertEquals(124, $decorator->getA());
+        $decorator->setA(1000);
+        $this->assertEquals(1001, $decorator->getA());
+    }
 }
