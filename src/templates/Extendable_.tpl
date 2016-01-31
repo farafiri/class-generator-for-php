@@ -1,7 +1,12 @@
-<?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : ''; ?>
+<?php echo $newClassNamespace ? 'namespace ' . $newClassNamespace . ';' : '';
+$interfaces = '';
+foreach($extraInterfaces as $extraInterface) {
+    $interfaces .= ', \\' . $extraInterface;
+}
+?>
 
 class {{newClassName}} extends <?php echo '\\' . $generator->getGeneratorAggregator()->getNewClassNameFor($baseClass, 'decorator'); ?>
-  implements \{{generatorNamespace}}\Interfaces\Extendable
+  implements \{{generatorNamespace}}\Interfaces\Extendable {{interfaces}}
 {
     protected $cgTrueExteddable;
     protected $cgLastDecorated;
@@ -23,6 +28,19 @@ class {{newClassName}} extends <?php echo '\\' . $generator->getGeneratorAggrega
         $decorator->cgExtend($this);
     }
 
+    /**
+     * @param \ClassGenerator\BaseDecorator $decorator
+     */
+    public function cgReextend(\ClassGenerator\BaseDecorator $decorator = null)
+    {
+        if ($decorator) {
+            $this->cgExtendWith($decorator);
+        }
+
+        return \ClassGenerator\Autoloader::getInstance()->getGenerator()->redecorate($this);
+    }
+
+
     <?php echo $reflectionMethod ? $reflectionMethod->getdocComment() : ''; ?>
     public function __construct({{parametersDefinition}})
     {
@@ -36,4 +54,29 @@ class {{newClassName}} extends <?php echo '\\' . $generator->getGeneratorAggrega
         $this->cgLastDecorated = $this;
         $this->cgSetDecorated($redirect);
     }
+
+    static public function cgCopySettingsFrom($obj) {
+        $r = new \ReflectionClass('{{newClass}}');
+        $access = new \ReflectionClass(get_class($obj));
+        $instance = $r->newInstanceWithoutConstructor();
+        foreach(array('cgTrueExteddable', 'cgLastDecorated', 'cgDecorated') as $propertyName) {
+            $property = $access->getProperty($propertyName);
+            $property->setAccessible(true);
+            $value = $property->getValue($obj);
+            $instance->$propertyName = ($value === $obj) ? $instance : $value;
+        }
+        return $instance;
+    }
+
+// copy of [method] template from decoratorFor
+{{method}}
+    <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
+    <?php if (in_array($methodName, array('__call', '__clone', '__sleep', '__wakeup'))) continue; ?>
+    {{$reflectionMethod->getDocComment() . "\n"}}
+    function {{methodName}}({{parametersDefinition}})
+    {
+        return $this->cgDecorated->{{methodName}}({{parameters}});
+    }
+
+{{\method}}
 }

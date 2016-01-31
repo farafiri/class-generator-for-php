@@ -3,7 +3,7 @@
 namespace ClassGenerator\tests\ResourceClasses;
 
 
-class ToNumberDecorator extends \ClassGenerator\BaseDecorator
+class ToNumberDecorator extends \ClassGenerator\BaseDecorator implements ToNumberInterface
 {
     public function toNumber()
     {

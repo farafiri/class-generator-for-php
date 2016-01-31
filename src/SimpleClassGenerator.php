@@ -9,7 +9,6 @@ class SimpleClassGenerator extends BaseClassGenerator
     protected $regexPatterns = null;
     protected $template = null;
     protected $genParams;
-    protected $params = null;
 
     public function __construct($classNamePattern, $templateClassGenerator, $genParams = array())
     {
@@ -52,9 +51,8 @@ class SimpleClassGenerator extends BaseClassGenerator
      */
     public function generateCodeFor($className)
     {
-        $baseClassName = $this->getBaseClassName($className);
-        if ($baseClassName) {
-            $params = $this->params;
+        if ($classData = $this->getClassData($className)) {
+            list($baseClassName, $params) = $classData;
             $params['generator'] = $this;
             return $this->templateClassGenerator->generate($className, $baseClassName, $this->getTemplate(), $params);
         }
@@ -65,27 +63,39 @@ class SimpleClassGenerator extends BaseClassGenerator
      *
      * @return string class or interface name
      */
-    public function getClassName($baseClassName)
+    public function getClassName($baseClassName, $params = array())
     {
         $explodedPattern = explode('*', $this->classNamePattern);
         $explodedClassName = explode('\\', $baseClassName);
         array_push($explodedClassName, $explodedPattern[0] . array_pop($explodedClassName) . $explodedPattern[1]);
 
-        return implode('\\', $explodedClassName);
+        $className = implode('\\', $explodedClassName);
+        foreach($params as $paramName => $values) {
+            foreach((array) $values as $value) {
+                $className .= '\\' . $paramName . $value;
+            }
+        }
+
+        return $className;
     }
 
-    protected function getBaseClassName($className)
+    public function getBaseClassName($className, $returnNull = true) {
+        $data = $this->getClassData($className);
+        return $data ? $data[0] : ($returnNull ? null : $className);
+    }
+
+    protected function getClassData($className)
     {
-        $this->params = null;
         foreach($this->getRegexPatterns() as $regexPattern) {
             if (preg_match($regexPattern, $className, $matches)) {
                 $baseClass = $matches[1] . $matches[2] . $matches[3];
                 if (class_exists($baseClass) || interface_exists($baseClass)) {
-                    $this->params = $this->generateParams($matches);
-                    return $baseClass;
+                    return array($baseClass, $this->generateParams($matches));
                 }
             }
         }
+
+        return null;
     }
 
     protected function generateParams($matches) {

@@ -21,8 +21,8 @@ class TemplateClassCodeGenerator
             $parameters = null;
         }
         $generatorNamespace = __NAMESPACE__;
-        //$reflectionMethods = $this->getMethods($reflectionClass, $extraData);
-        $template = str_replace('{{method}}', '<?php foreach($reflectionClass->getMethods(\\ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
+        $reflectionMethods = $this->getMethods($reflectionClass, $extraData);
+        $template = str_replace('{{method}}', '<?php foreach($reflectionMethods as $reflectionMethod) {
             $methodName = $reflectionMethod->getName();
             if ($methodName === "__construct" || $methodName === "__destruct") continue;
             if ($reflectionMethod->isStatic()) continue;
@@ -93,5 +93,9 @@ class TemplateClassCodeGenerator
         }
 
         return implode(',', $parameters);
+    }
+
+    protected function getMethods($reflectionClass, $extraData) {
+        return isset($extraData['@methods']) ? $extraData['@methods'] : $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
     }
 }

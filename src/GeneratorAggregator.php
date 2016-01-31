@@ -24,9 +24,9 @@ class GeneratorAggregator
             'lazy' => new SimpleClassGenerator('Lazy*', $templateClassCodeGenerator),
             'reference' => new SimpleClassGenerator('ReferenceTo*', $templateClassCodeGenerator),
             'override' => new SimpleClassGenerator('MethodOverrided*', $templateClassCodeGenerator),
-            'decorator' => new SimpleClassGenerator('DecoratorFor*', $templateClassCodeGenerator),
+            'decorator' => new ExtendableClassGenerator('DecoratorFor*', $templateClassCodeGenerator, array('AddInterface'), new Utils\Coder()),
             'decorable' => new SimpleClassGenerator('Decorable*', $templateClassCodeGenerator),
-            'extendable' => new SimpleClassGenerator('Extendable*', $templateClassCodeGenerator),
+            'extendable' => new ExtendableClassGenerator('Extendable*', $templateClassCodeGenerator, array('AddInterface'), new Utils\Coder()),
             'trueCGExtendable' => new SimpleClassGenerator('TrueCGExtendable*', $templateClassCodeGenerator),
             'redirectCGExtendable' => new SimpleClassGenerator('RedirectCGExtendable*', $templateClassCodeGenerator),
             'composite' =>  new SimpleClassGenerator('Composite*', $templateClassCodeGenerator),
@@ -124,5 +124,29 @@ class GeneratorAggregator
     {
         $decoratorClassName = $this->generators['decorator']->getClassName(get_class($object));
         return new $decoratorClassName($object);
+    }
+
+    public function redecorate($object) {
+        $interfaces = array();
+        $o = $object;
+        while($o instanceof Interfaces\Decorator) {
+            foreach(class_implements($o) as $interface) {
+                if (strpos($interface, 'ClassGenerator\\Interfaces\\') !== 0) {
+                    $interfaces[] = $interface;
+                }
+            };
+            $o = $o->cgGetDecorated();
+        }
+
+        if ($object instanceof Interfaces\Extendable) {
+            $generator = $this->generators['extendable'];
+            $originObjectClass = $this->generators['trueCGExtendable']->getBaseClassName(get_class($o), false);
+            $decoratorClassName = $generator->getClassName($originObjectClass, array('interfaces' => $interfaces));
+            return $decoratorClassName::cgCopySettingsFrom($object);
+        } else {
+            $generator = $this->generators['decorator'];
+            $decoratorClassName = $generator->getClassName(get_class($o), array('interfaces' => $interfaces));
+            return new $decoratorClassName($object);
+        }
     }
 }

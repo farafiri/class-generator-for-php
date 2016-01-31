@@ -2,6 +2,10 @@
 
 class {{newClassName}} <?php
 $interfaces = '\\' . $generatorNamespace . '\\Interfaces\\Generated, \\' . $generatorNamespace . '\\Interfaces\\Decorator';
+foreach($extraInterfaces as $extraInterface) {
+    $interfaces .= ', \\' . $extraInterface;
+}
+
 if (interface_exists($baseClass)) {
     $addIteratorAggregatorInterface = (in_array('Traversable', class_implements($baseClass)) || $baseClass === 'Traversable') &&
                                       !(in_array('Iterator', class_implements($baseClass)) || $baseClass === 'Iterator') &&
@@ -65,6 +69,14 @@ if (interface_exists($baseClass)) {
     public function cgDecorateWith(\ClassGenerator\BaseDecorator $decorator)
     {
         $decorator->cgDecorate($this);
+    }
+
+    public function cgRedecorate(\ClassGenerator\BaseDecorator $decorator = null) {
+        if ($decorator) {
+            $this->cgDecorateWith($decorator);
+        }
+
+        return \ClassGenerator\Autoloader::getInstance()->getGenerator()->redecorate($this);
     }
 
     /**
