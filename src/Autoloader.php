@@ -26,6 +26,11 @@ class Autoloader
     protected $generator;
 
     /**
+     * @var integer
+     */
+    protected $maxFileNameChunkLength = 200;
+
+    /**
      * @param string  $cachePath   if this path will be set with $enableCache = false then class will be saved in file
      * @param boolean $enableCache
      */
@@ -135,7 +140,11 @@ class Autoloader
      */
     protected function getFileNameForClass($className)
     {
-        return $this->cachePath . DIRECTORY_SEPARATOR . str_replace('\\', '__', $className) . '.php';
+        $fileName = str_replace('\\', '__', $className);
+        if (strlen($fileName) > $this->maxFileNameChunkLength) {
+            $fileName = 'MD5_' . md5($fileName);
+        }
+        return $this->cachePath . DIRECTORY_SEPARATOR . $fileName . '.php';
     }
 
     /**
