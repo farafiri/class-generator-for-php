@@ -9,7 +9,7 @@
 class PropertyTest extends BaseTest {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\Property\Name')
+     * @_testWith ('ClassGenerator\Property\Name')
      */
     public function testTraitGenerated($traitName) {
         $this->assertTrue(trait_exists($traitName, true));

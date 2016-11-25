@@ -7,7 +7,7 @@ class DecoratorTest extends BaseTest
 {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX')
      *           ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface')
      */
     public function testDecorator($testedClass)
@@ -25,7 +25,7 @@ class DecoratorTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX', 'ClassGenerator\tests\ResourceClasses\X')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX', 'ClassGenerator\tests\ResourceClasses\X')
      *           ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
      */
     public function testDecoratorIsInstanceOfBase($testedClass, $parentClass)
@@ -38,7 +38,7 @@ class DecoratorTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX')
      *           ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface')
      */
     public function testBaseDecorator($testedClass)
@@ -56,7 +56,7 @@ class DecoratorTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX')
      *           ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface')
      */
     public function testCloneOnDecorator($testedClass)
@@ -71,7 +71,7 @@ class DecoratorTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX')
      *           ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface')
      */
     public function testSleepWakeupOnDecorator($testedClass)
@@ -215,7 +215,7 @@ class DecoratorTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('DecoratorForTraversable',       'ClassGenerator\tests\ResourceClasses\Iterator')
+     * @_testWith ('DecoratorForTraversable',       'ClassGenerator\tests\ResourceClasses\Iterator')
      *           ('DecoratorForTraversable',       'ClassGenerator\tests\ResourceClasses\IteratorAggregate')
      *           ('DecoratorForIterator',          'ClassGenerator\tests\ResourceClasses\Iterator')
      *           ('DecoratorForIteratorAggregate', 'ClassGenerator\tests\ResourceClasses\IteratorAggregate')

@@ -7,7 +7,7 @@ class CompositeTest extends BaseTest
 {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
      *           ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
      */
     public function testComposite($testedClass)
@@ -34,7 +34,7 @@ class CompositeTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
      *           ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
      */
     public function testCompositeShouldReturnNonFalseValue($testedClass)
@@ -182,7 +182,7 @@ class CompositeTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
      *           ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
      */
     public function testCloneOnComposite($testedClass)
@@ -198,7 +198,7 @@ class CompositeTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
      *           ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
      */
     public function testSleepWakeupOnComposite($testedClass)
@@ -211,7 +211,7 @@ class CompositeTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeIterator')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeIterator')
      *           ('CompositeIterator')
      */
     public function testCompositeOfIteratorShouldIterateOverAllChildren($testedClass)
@@ -233,7 +233,7 @@ class CompositeTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeIteratorAggregate')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeIteratorAggregate')
      *           ('CompositeIteratorAggregate')
      */
     public function testCompositeOfIteratorAggregateShouldIterateOverAllChildren($testedClass)
@@ -255,7 +255,7 @@ class CompositeTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
      *           ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
      */
     public function testCompositeIfMethodReturnsArrayThenCompositeShouldReturnMergedArray($testedClass)

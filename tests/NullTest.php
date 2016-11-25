@@ -7,7 +7,7 @@ class NullTest extends BaseTest
 {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\NullX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\NullX')
      *           ('ClassGenerator\tests\ResourceClasses\NullXInterface')
      */
     public function testNull($testedClass)
@@ -21,7 +21,7 @@ class NullTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\NullX', 'ClassGenerator\tests\ResourceClasses\X')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\NullX', 'ClassGenerator\tests\ResourceClasses\X')
      *           ('ClassGenerator\tests\ResourceClasses\NullXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
      */
     public function testNullObjectIsInstanceOfBase($testedClass, $parentClass)

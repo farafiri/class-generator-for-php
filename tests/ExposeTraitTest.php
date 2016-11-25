@@ -11,7 +11,7 @@ use ClassGenerator\tests\ResourceClasses;
 class ExposeTraitTest extends BaseTest {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\ExposeTraitTester', true)
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\ExposeTraitTester', true)
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\BaseTester', true)
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\MethodTemplateName', true)
      *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitInterfaceTester', false)
@@ -32,7 +32,7 @@ class ExposeTraitTest extends BaseTest {
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\FixedParamsOn', array(30))
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\FixedParamsOn', array(30))
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\FixedParamsOff', array())
      */
     public function testFixedParameters($variant, $expectedParams) {
@@ -42,7 +42,7 @@ class ExposeTraitTest extends BaseTest {
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\BaseTester', true)
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\BaseTester', true)
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\RefMethods', false)
      */
     public function testRefMethod($variant, $methodExists) {
@@ -55,7 +55,7 @@ class ExposeTraitTest extends BaseTest {
 
     /**
      * @dataProvider withProvider
-     * @testWith ('getA', false)
+     * @_testWith ('getA', false)
      *           ('setA', true)
      *           ('getB', true)
      *           ('setB', false)

@@ -7,7 +7,7 @@ class LazyTest extends BaseTest
 {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\X')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\X')
      *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
      */
     public function testLazyIsInstanceOfLazy($testedClass, $parentClass)
@@ -18,7 +18,7 @@ class LazyTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
      *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
      */
     public function testLazyProducesInstanceOfLazy($testedClass)
@@ -43,7 +43,7 @@ class LazyTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
      *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
      */
     public function testBaseLazyWithExistingProxifiedObject($testedClass)
@@ -61,7 +61,7 @@ class LazyTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
      *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
      */
     public function testBaseLazyWithClosure($testedClass)

@@ -9,7 +9,7 @@
 class DoctrineCollectionTest extends BaseTest {
     /**
      * @dataProvider withProvider
-     * @testWith ('ClassGenerator\DoctrineCollection\Name')
+     * @_testWith ('ClassGenerator\DoctrineCollection\Name')
      */
     public function testTraitGenerated($traitName) {
         $this->assertTrue(trait_exists($traitName, true));

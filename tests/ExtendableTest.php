@@ -7,7 +7,7 @@ class ExtendableTest extends BaseTest {
 
     /**
      * @dataProvider withProvider
-     * @testWith ('', 1, 3)
+     * @_testWith ('', 1, 3)
      *           ('cgDecorate', 11, 3)
      *           ('cgExtend', 11, 13)
      */
