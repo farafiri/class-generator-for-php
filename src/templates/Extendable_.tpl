@@ -40,6 +40,10 @@ class {{newClassName}} extends <?php echo '\\' . $generator->getGeneratorAggrega
         return \ClassGenerator\Autoloader::getInstance()->getGenerator()->redecorate($this);
     }
 
+    public function __sleep()
+    {
+        return array('cgDecorated', 'cgTrueExteddable', 'cgLastDecorated');
+    }
 
     <?php echo $reflectionMethod ? $reflectionMethod->getdocComment() : ''; ?>
     public function __construct({{parametersDefinition}})
