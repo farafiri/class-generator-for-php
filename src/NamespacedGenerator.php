@@ -64,7 +64,7 @@ class NamespacedGenerator extends BaseClassGenerator {
 
     public function getTemplateFile()
     {
-        $classNameTail = array_slice(explode('\\', $this->getPrefix()), -1)[0];
-        return  __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $classNameTail . '.tpl';
+        $classNameTail = array_slice(explode('\\', $this->getPrefix()), -1);
+        return  __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $classNameTail[0] . '.tpl';
     }
 } 
