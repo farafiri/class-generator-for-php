@@ -22,7 +22,7 @@ if ($parametersDefinition === null) {
     public function __construct({{parametersDefinition}})
     {
         if ($this->cgConstructorParams === null) {
-            $this->cgConstructorParams = array({{parameters}});
+            $this->cgConstructorParams = array(func_get_args());
         } else {
             $this->cgConstructorParams = null;
             parent::__construct({{parameters}});

@@ -66,6 +66,10 @@ class TemplateClassCodeGenerator
                 $parameterStr .= '&';
             }
 
+            if (method_exists($parameter, 'isVariadic') && $parameter->isVariadic()) {
+                $parameterStr .= '...';
+            }
+
             $parameterStr .= '$' . $parameter->getName();
 
             if ($parameter->isDefaultValueAvailable()) {
@@ -89,7 +93,8 @@ class TemplateClassCodeGenerator
     {
         $parameters = array();
         foreach($reflectionMethod->getParameters() as $parameter) {
-            $parameters[] = '$' . $parameter->getName();
+            $isVariadic = method_exists($parameter, 'isVariadic') && $parameter->isVariadic();
+            $parameters[] = ($isVariadic ? '...' : '') . '$' . $parameter->getName();
         }
 
         return implode(',', $parameters);
