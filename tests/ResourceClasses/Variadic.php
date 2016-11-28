@@ -30,6 +30,6 @@ class Variadic {
             $result .= $str;
         }
 
-        return $glue;
+        return $result;
     }
 } 
