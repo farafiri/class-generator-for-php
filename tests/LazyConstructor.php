@@ -44,4 +44,16 @@ class LazyConstructor extends BaseTest
 
         $this->assertEquals($x, unserialize(serialize($x)));
     }
+
+    /**
+     * @requires PHP 5.6
+     */
+    public function testVariadics() {
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\LazyConstructorVariadic'));
+
+        $x = new ResourceClasses\LazyConstructorVariadic('.', ',');
+        $this->assertNull($x->postfixes);
+        $this->assertEquals('.a|,b', $x->join('|', 'a', 'b'));
+        $this->assertEquals(array('.', ','), $x->postfixes);
+    }
 } 

@@ -10,7 +10,7 @@ namespace ClassGenerator\tests\ResourceClasses;
 
 
 class Variadic {
-    protected $postfixes;
+    public $postfixes;
 
     public function __construct(...$postfixes) {
         $this->postfixes = $postfixes;

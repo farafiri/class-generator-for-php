@@ -247,7 +247,7 @@ class DecoratorTest extends BaseTest
     /**
      * @requires PHP 5.6
      */
-    public function testViariadics() {
+    public function testVariadics() {
         $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\DecoratorForVariadic'));
 
         $x = new ResourceClasses\DecoratorForVariadic(new ResourceClasses\Variadic('.', ','));
