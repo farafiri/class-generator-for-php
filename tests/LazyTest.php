@@ -172,4 +172,14 @@ class LazyTest extends BaseTest
         $this->assertEquals($x->getA(), unserialize(serialize($x))->getA());
         $this->assertEquals($x->getB(), unserialize(serialize($x))->getB());
     }
+
+    /**
+     * @requires PHP 5.6
+     */
+    public function testVariadics() {
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\LazyVariadic'));
+
+        $x = new ResourceClasses\LazyVariadic('.', ',');
+        $this->assertEquals('.a|,b', $x->join('|', 'a', 'b'));
+    }
 }

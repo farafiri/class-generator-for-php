@@ -57,7 +57,7 @@ trait {{newClassName}}
     {
         return $this->{{prefix}}{{exposed}}('{{methodName}}', <?php
             if (isset($fixedParameters)) {
-                echo 'array(' . $parameters . ')';
+                echo $arrayParameters;
             } else {
                 echo 'func_get_args()';
             }; ?>);

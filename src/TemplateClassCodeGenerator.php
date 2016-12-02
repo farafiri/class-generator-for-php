@@ -15,10 +15,12 @@ class TemplateClassCodeGenerator
             $reflectionMethod = $reflectionClass->getMethod('__construct');
             $parametersDefinition = $this->helper_getParametersDefinition($reflectionMethod);
             $parameters = $this->helper_getParameters($reflectionMethod);
+            $arrayParameters = $this->helper_getArrayParameters($reflectionMethod);
         } catch(\Exception $e) {
             $reflectionMethod = null;
             $parametersDefinition = null;
             $parameters = null;
+            $arrayParameters = 'array()';
         }
         $generatorNamespace = __NAMESPACE__;
         $reflectionMethods = $this->getMethods($reflectionClass, $extraData);
@@ -28,6 +30,7 @@ class TemplateClassCodeGenerator
             if ($reflectionMethod->isStatic()) continue;
             $parametersDefinition = $this->helper_getParametersDefinition($reflectionMethod);
             $parameters = $this->helper_getParameters($reflectionMethod);
+            $arrayParameters = $this->helper_getArrayParameters($reflectionMethod);
         ?>', $template);
 
         $template = str_replace('{{\method}}', '<?php } ?>', $template);
@@ -98,6 +101,26 @@ class TemplateClassCodeGenerator
         }
 
         return implode(',', $parameters);
+    }
+
+    public function helper_getArrayParameters(\ReflectionMethod $reflectionMethod)
+    {
+        $parameters = array();
+        if (method_exists($reflectionMethod, 'isVariadic') && $reflectionMethod->isVariadic()) {
+            foreach($reflectionMethod->getParameters() as $parameter) {
+                $isVariadic = method_exists($parameter, 'isVariadic') && $parameter->isVariadic();
+                $p = '$' . $parameter->getName();
+                $parameters[] = $isVariadic ? $p : ('[' . $p . ']');
+            }
+
+            return 'array_merge(' . implode(',', $parameters) . ')';
+        } else {
+            foreach($reflectionMethod->getParameters() as $parameter) {
+                $parameters[] = '$' . $parameter->getName();
+            }
+
+            return 'array(' . implode(',', $parameters) . ')';
+        }
     }
 
     protected function getMethods($reflectionClass, $extraData) {

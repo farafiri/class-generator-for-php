@@ -10,7 +10,7 @@ if (interface_exists($baseClass)) {
 {
     public function __construct({{parametersDefinition}})
     {
-        $this->cgProxifiedObjectConstructorParameters = array({{parameters}});
+        $this->cgProxifiedObjectConstructorParameters = {{arrayParameters}};
         $this->cgLazyProxyCreator = \ClassGenerator\Autoloader::getInstance()->getGenerator();
         $this->cgLazyProxySettings = static::$defaultLazyProxySettings;
         $this->cgLazyMethods = true;
