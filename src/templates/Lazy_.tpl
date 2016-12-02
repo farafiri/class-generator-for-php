@@ -147,7 +147,7 @@ if (interface_exists($baseClass)) {
     function {{methodName}}({{parametersDefinition}})
     {
         if ($this->cgLazyMethods && $this->cgLazyProxySettings['{{methodName}}']['isLazyEvaluated']) {
-            $closure = function () <?php echo $parameters ? "use ($parameters) " : ""; ?> {
+            $closure = function () <?php echo $parameters ? "use ($parametersList) " : ""; ?> {
                 if ($this->cgProxifiedObject === null) {
                     if ($this->cgProxifiedObjectConstructorParameters === null) {
                         $this->cgProxifiedObject = call_user_func($this->cgProxifiedObjectCreator);

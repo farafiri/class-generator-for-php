@@ -16,10 +16,12 @@ class TemplateClassCodeGenerator
             $parametersDefinition = $this->helper_getParametersDefinition($reflectionMethod);
             $parameters = $this->helper_getParameters($reflectionMethod);
             $arrayParameters = $this->helper_getArrayParameters($reflectionMethod);
+            $parametersList = $this->helper_getParameters($reflectionMethod, true);
         } catch(\Exception $e) {
             $reflectionMethod = null;
             $parametersDefinition = null;
             $parameters = null;
+            $parametersList = null;
             $arrayParameters = 'array()';
         }
         $generatorNamespace = __NAMESPACE__;
@@ -31,6 +33,7 @@ class TemplateClassCodeGenerator
             $parametersDefinition = $this->helper_getParametersDefinition($reflectionMethod);
             $parameters = $this->helper_getParameters($reflectionMethod);
             $arrayParameters = $this->helper_getArrayParameters($reflectionMethod);
+            $parametersList = $this->helper_getParameters($reflectionMethod, true);
         ?>', $template);
 
         $template = str_replace('{{\method}}', '<?php } ?>', $template);
@@ -92,11 +95,11 @@ class TemplateClassCodeGenerator
         return implode(',', $parameters);
     }
 
-    public function helper_getParameters(\ReflectionMethod $reflectionMethod)
+    public function helper_getParameters(\ReflectionMethod $reflectionMethod, $parametersList = false)
     {
         $parameters = array();
         foreach($reflectionMethod->getParameters() as $parameter) {
-            $isVariadic = method_exists($parameter, 'isVariadic') && $parameter->isVariadic();
+            $isVariadic = !$parametersList && method_exists($parameter, 'isVariadic') && $parameter->isVariadic();
             $parameters[] = ($isVariadic ? '...' : '') . '$' . $parameter->getName();
         }
 
