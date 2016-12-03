@@ -7,8 +7,9 @@ class CompositeTest extends BaseTest
 {
     /**
      * @dataProvider withProvider
-     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
-     *           ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX', 'ClassGenerator\tests\ResourceClasses\X')
+     *            ('ClassGenerator\tests\ResourceClasses\CompositeXInterface', 'ClassGenerator\tests\ResourceClasses\X')
+     *            ('ClassGenerator\tests\ResourceClasses\CompositeX7', 'ClassGenerator\tests\ResourceClasses\X7s', 'minPhp' => '7.0')
      */
     public function testComposite($testedClass)
     {
@@ -36,7 +37,6 @@ class CompositeTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX')
      *            ('ClassGenerator\tests\ResourceClasses\CompositeXInterface')
-     *            ('ClassGenerator\tests\ResourceClasses\CompositeX7', 'minPhp' => '7.0')
      */
     public function testCompositeShouldReturnNonFalseValue($testedClass)
     {

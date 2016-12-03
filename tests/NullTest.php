@@ -9,7 +9,6 @@ class NullTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\NullX')
      *           ('ClassGenerator\tests\ResourceClasses\NullXInterface')
-     *           ('ClassGenerator\tests\ResourceClasses\NullX7', 'minPhp' => '7.0')
      */
     public function testNull($testedClass)
     {
