@@ -42,7 +42,7 @@ class DecoratorTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\X')
-     *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
      */
     public function testBaseDecorator($testedClass, $decoratedClass)
     {
