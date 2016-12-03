@@ -8,7 +8,8 @@ class LazyTest extends BaseTest
     /**
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\X')
-     *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
      */
     public function testLazyIsInstanceOfLazy($testedClass, $parentClass)
     {

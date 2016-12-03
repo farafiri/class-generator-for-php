@@ -16,12 +16,12 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
     {{method}}
     <?php if (in_array($methodName, array('__call', '__clone', '__sleep', '__wakeup'))) continue; ?>
 
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         return $this->cgThis->{{methodName}}({{parameters}});
     }
 
-    function {{methodName}}{{methodPostfix}}({{parametersDefinition}})
+    function {{methodName}}{{methodPostfix}}({{parametersDefinition}}){{returnType}}
     {
         return parent::{{methodName}}({{parameters}});
     }

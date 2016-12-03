@@ -14,7 +14,7 @@ trait {{newClassName}}
           $methodName == 'getId' ||
           $methodName == 'setId') continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         return $this->{{exposedGetter}}()->{{methodName}}({{parameters}});
     }

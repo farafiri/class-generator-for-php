@@ -207,7 +207,7 @@ if (interface_exists($baseClass)) {
     <?php if ((in_array('Iterator', class_implements($baseClass)) || $baseClass == 'Iterator') && in_array($methodName, array('rewind', 'current', 'key', 'next', 'valid'))) continue; ?>
     <?php if (in_array($methodName, array('__clone', '__sleep', '__wakeup'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         $collection = array();
         foreach($this->cgChildren as $child) {

@@ -53,7 +53,7 @@ if ($parametersDefinition === null) {
     <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize'))) continue; ?>
     <?php if (in_array($methodName, array("__clone"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         if ($this->cgConstructorParams !== null) {
             call_user_func_array(array($this, '__construct'), $this->cgConstructorParams);

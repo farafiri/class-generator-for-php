@@ -33,7 +33,7 @@ class {{newClassName}} implements \{{generatorNamespace}}\Interfaces\Decorator, 
     {{method}}
     <?php if (in_array($methodName, array('__call', '__clone', '__sleep', '__wakeup'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         return $this->cgDecorated->{{methodName}}{{methodPostfix}}({{parameters}});
     }

@@ -53,7 +53,7 @@ trait {{newClassName}}
           $methodName == 'setId' ||
           in_array(strtolower($methodName), array_map('strtolower', $noArr))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}(<?php echo isset($fixedParameters) ? $parametersDefinition : $defaultParamsList; ?>)
+    function {{methodName}}(<?php echo isset($fixedParameters) ? $parametersDefinition : $defaultParamsList; ?>){{returnType}}
     {
         return $this->{{prefix}}{{exposed}}('{{methodName}}', <?php
             if (isset($fixedParameters)) {

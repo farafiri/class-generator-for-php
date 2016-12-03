@@ -144,7 +144,7 @@ if (interface_exists($baseClass)) {
     <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
     <?php if (in_array($methodName, array("__clone", "cgGetProxifiedObject", "__sleep", "__wakeup"))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         if ($this->cgLazyMethods && $this->cgLazyProxySettings['{{methodName}}']['isLazyEvaluated']) {
             $closure = function () <?php echo $parameters ? "use ($parametersList) " : ""; ?> {

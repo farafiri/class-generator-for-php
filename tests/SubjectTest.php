@@ -5,9 +5,14 @@ use ClassGenerator\tests\ResourceClasses;
 
 class SubjectTest extends BaseTest
 {
-    public function testSubjectIsInstanceofSplSubject()
+    /**
+     * @dataProvider withProvider
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\SubjectX')
+     *            ('ClassGenerator\tests\ResourceClasses\SubjectX7', 'minPhp' => '7.0')
+     */
+    public function testSubjectIsInstanceofSplSubject($testedClass)
     {
-        $x = new ResourceClasses\SubjectX();
+        $x = new $testedClass();
         $this->assertTrue($x instanceof \SplSubject);
     }
 

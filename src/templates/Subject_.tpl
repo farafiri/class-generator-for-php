@@ -85,7 +85,7 @@ if (interface_exists($baseClass)) {
 <?php if (in_array('Serializable', class_implements($baseClass)) && in_array($methodName, array('serialize', 'unserialize'))) continue; ?>
 <?php if (in_array($methodName, array('notify', 'attach', 'detach', '__toString', '__get', '__wakeup', '__sleep'))) continue; ?>
     {{$reflectionMethod->getDocComment() . "\n"}}
-    function {{methodName}}({{parametersDefinition}})
+    function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
         $result = parent::{{methodName}}({{parameters}});
         $this->notify('{{methodName}}'<?php echo $parameters ? (', ' . $parameters) : ''; ?>);

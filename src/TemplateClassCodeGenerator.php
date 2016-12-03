@@ -34,6 +34,7 @@ class TemplateClassCodeGenerator
             $parameters = $this->helper_getParameters($reflectionMethod);
             $arrayParameters = $this->helper_getArrayParameters($reflectionMethod);
             $parametersList = $this->helper_getParameters($reflectionMethod, true);
+            $returnType = $this->helper_getReturnTypeDefinition($reflectionMethod);
         ?>', $template);
 
         $template = str_replace('{{\method}}', '<?php } ?>', $template);
@@ -54,11 +55,21 @@ class TemplateClassCodeGenerator
         return $result;
     }
 
+    public function helper_getReturnTypeDefinition(\ReflectionMethod $reflectionMethod) {
+        if (method_exists($reflectionMethod, 'getReturnType') && $reflectionMethod->getReturnType()) {
+            return ': ' . $this->typeToString($reflectionMethod->getReturnType());
+        }
+
+        return '';
+    }
+
     public function helper_getParametersDefinition(\ReflectionMethod $reflectionMethod)
     {
         $parameters = array();
         foreach($reflectionMethod->getParameters() as $parameter) {
-            if ($parameter->getClass()) {
+            if (method_exists($parameter, 'getType')) {
+                $parameterStr = $this->typeToString($parameter->getType());
+            } elseif ($parameter->getClass()) {
                 $parameterStr = '\\' .$parameter->getClass()->getName() . ' ';
             } elseif ($parameter->isArray()) {
                 $parameterStr = 'array ';
@@ -93,6 +104,17 @@ class TemplateClassCodeGenerator
         }
 
         return implode(',', $parameters);
+    }
+
+    public function typeToString($type) {
+        if (!$type) {
+            return '';
+        }
+
+        preg_match('/^(\\??)(\\\\?)(.+)/', (string) $type, $matches);
+        list($_, $nullable, $e, $typeName) = $matches;
+        $isInternal = in_array($typeName, explode(',', 'int,float,bool,string,callable,array,self'));
+        return $nullable . ($isInternal ? '' : '\\') . $typeName;
     }
 
     public function helper_getParameters(\ReflectionMethod $reflectionMethod, $parametersList = false)

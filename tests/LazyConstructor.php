@@ -5,9 +5,14 @@ use ClassGenerator\tests\ResourceClasses;
 
 class LazyConstructor extends BaseTest
 {
-    public function testLazyConstructor()
+    /**
+     * @dataProvider withProvider
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyConstructorX')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyConstructorX7', 'minPhp' => '7.0')
+     */
+    public function testLazyConstructor($testedClass)
     {
-        $x = new ResourceClasses\LazyConstructorX(101, 202);
+        $x = $testedClass(101, 202);
 
         $this->assertEquals(0, $x->a);
         $this->assertEquals(0, $x->b);
