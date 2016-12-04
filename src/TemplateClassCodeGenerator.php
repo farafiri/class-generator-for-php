@@ -114,7 +114,7 @@ class TemplateClassCodeGenerator
         preg_match('/^(\\??)(\\\\?)(.+)/', (string) $type, $matches);
         list($_, $nullable, $e, $typeName) = $matches;
         $isInternal = in_array($typeName, explode(',', 'int,float,bool,string,callable,array,self'));
-        $nullable = $type->allowsNull() ? '?' : '';
+        $nullable = ($type->allowsNull() && version_compare(PHP_VERSION, '7.1') > -1) ? '?' : '';
         return $nullable . ($isInternal ? '' : '\\') . $typeName;
     }
 
