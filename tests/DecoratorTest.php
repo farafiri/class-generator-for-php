@@ -10,6 +10,7 @@ class DecoratorTest extends BaseTest
      * @_testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
      */
     public function testDecorator($testedClass, $decoratedClass)
     {
@@ -29,6 +30,7 @@ class DecoratorTest extends BaseTest
      * @_testWith ('ClassGenerator\tests\ResourceClasses\DecoratorForX', 'ClassGenerator\tests\ResourceClasses\X', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX71', 'ClassGenerator\tests\ResourceClasses\X71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
      */
     public function testDecoratorIsInstanceOfBase($testedClass, $parentClass, $decoratedClass)
     {
@@ -43,10 +45,11 @@ class DecoratorTest extends BaseTest
      * @_testWith ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
      */
     public function testBaseDecorator($testedClass, $decoratedClass)
     {
-        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX'));
+        $this->assertTrue(class_exists($testedClass));
 
         $x = new $decoratedClass();
         $decorator = new $testedClass($x);
@@ -239,6 +242,7 @@ class DecoratorTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\X',  'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForX')
      *            ('ClassGenerator\tests\ResourceClasses\X7', 'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForX7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\X71', 'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForX71', 'minPhp' => '7.1')
      */
     public function testWithMethodOverriding($decoratedClass, $decoratorClass) {
         $decorated = new $decoratedClass(123, 234);

@@ -10,6 +10,7 @@ class LazyTest extends BaseTest
      * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface')
      *            ('ClassGenerator\tests\ResourceClasses\LazyX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyX71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
      */
     public function testLazyIsInstanceOfLazy($testedClass, $parentClass)
     {
@@ -22,6 +23,7 @@ class LazyTest extends BaseTest
      * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\LazyX')
      *            ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\LazyX')
      *            ('ClassGenerator\tests\ResourceClasses\LazyX7', 'ClassGenerator\tests\ResourceClasses\LazyX7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyX71', 'ClassGenerator\tests\ResourceClasses\LazyX71', 'minPhp' => '7.1')
      */
     public function testLazyProducesInstanceOfLazy($testedClass, $expectedClass)
     {
@@ -34,6 +36,7 @@ class LazyTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
      *            ('ClassGenerator\tests\ResourceClasses\LazyX7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyX71', 'minPhp' => '7.1')
      */
     public function testBaseLazy($testedClass)
     {
