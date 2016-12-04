@@ -19,19 +19,25 @@ class LazyTest extends BaseTest
 
     /**
      * @dataProvider withProvider
-     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
-     *           ('ClassGenerator\tests\ResourceClasses\LazyXInterface')
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX', 'ClassGenerator\tests\ResourceClasses\LazyX')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyXInterface', 'ClassGenerator\tests\ResourceClasses\LazyX')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyX7', 'ClassGenerator\tests\ResourceClasses\LazyX7', 'minPhp' => '7.0')
      */
-    public function testLazyProducesInstanceOfLazy($testedClass)
+    public function testLazyProducesInstanceOfLazy($testedClass, $expectedClass)
     {
         $x = new $testedClass(1, 2);
         $x2 = $x->createAnotherX();
-        $this->assertTrue($x2 instanceof ResourceClasses\LazyX);
+        $this->assertTrue($x2 instanceof $expectedClass);
     }
 
-    public function testBaseLazy()
+    /**
+     * @dataProvider withProvider
+     * @_testWith ('ClassGenerator\tests\ResourceClasses\LazyX')
+     *            ('ClassGenerator\tests\ResourceClasses\LazyX7', 'minPhp' => '7.0')
+     */
+    public function testBaseLazy($testedClass)
     {
-        $x = new ResourceClasses\LazyX(1, 2);
+        $x = new $testedClass(1, 2);
 
         $this->assertEquals(1, $x->getA());
         $this->assertEquals(2, $x->getB());
