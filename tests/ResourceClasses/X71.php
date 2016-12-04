@@ -8,7 +8,7 @@
 
 namespace ClassGenerator\tests\ResourceClasses;
 
-class X7
+class X71
 {
     public static $constructorCount = 0;
 
