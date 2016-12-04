@@ -8,7 +8,7 @@ class NullTest extends BaseTest
     /**
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\NullX')
-     *           ('ClassGenerator\tests\ResourceClasses\NullXInterface')
+     *            ('ClassGenerator\tests\ResourceClasses\NullXInterface')
      */
     public function testNull($testedClass)
     {
@@ -80,5 +80,29 @@ class NullTest extends BaseTest
         $x = new ResourceClasses\NullClassWithStatic();
 
         $this->assertTrue($x instanceof ResourceClasses\ClassWithStatic);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testTypeFromReturnTypehint() {
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\NullX7'));
+
+        $x = new ResourceClasses\NullX7();
+        $this->assertEquals(0, $x->getA());
+        $this->assertEquals(0, $x->getB());
+        $this->assertTrue($x->createAnotherX() instanceof ResourceClasses\NullX7);
+    }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testTypeFromReturnNullableTypehint() {
+        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\NullX71'));
+
+        $x = new ResourceClasses\NullX71();
+        $this->assertEquals(null, $x->getA());
+        $this->assertEquals(0, $x->getB()); //phpDoc type have higher priority than typehint
+        $this->assertEquals(null, $x->createAnotherX());
     }
 }

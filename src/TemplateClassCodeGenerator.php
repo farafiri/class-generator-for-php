@@ -2,6 +2,8 @@
 
 namespace ClassGenerator;
 
+use ClassGenerator\Utils\Utils;
+
 class TemplateClassCodeGenerator
 {
     public function generate($newClass, $baseClass, $template, $extraData = array())
@@ -57,7 +59,7 @@ class TemplateClassCodeGenerator
 
     public function helper_getReturnTypeDefinition(\ReflectionMethod $reflectionMethod) {
         if (method_exists($reflectionMethod, 'getReturnType') && $reflectionMethod->getReturnType()) {
-            return ': ' . $this->typeToString($reflectionMethod->getReturnType());
+            return ': ' . Utils::typeToString($reflectionMethod->getReturnType());
         }
 
         return '';
@@ -68,7 +70,7 @@ class TemplateClassCodeGenerator
         $parameters = array();
         foreach($reflectionMethod->getParameters() as $parameter) {
             if (method_exists($parameter, 'getType')) {
-                $parameterStr = $this->typeToString($parameter->getType());
+                $parameterStr = Utils::typeToString($parameter->getType());
             } elseif ($parameter->getClass()) {
                 $parameterStr = '\\' .$parameter->getClass()->getName() . ' ';
             } elseif ($parameter->isArray()) {
@@ -104,18 +106,6 @@ class TemplateClassCodeGenerator
         }
 
         return implode(',', $parameters);
-    }
-
-    public function typeToString($type) {
-        if (!$type) {
-            return '';
-        }
-
-        preg_match('/^(\\??)(\\\\?)(.+)/', (string) $type, $matches);
-        list($_, $nullable, $e, $typeName) = $matches;
-        $isInternal = in_array($typeName, explode(',', 'int,float,bool,string,callable,array,self'));
-        $nullable = ($type->allowsNull() && version_compare(PHP_VERSION, '7.1') > -1) ? '?' : '';
-        return $nullable . ($isInternal ? '' : '\\') . $typeName;
     }
 
     public function helper_getParameters(\ReflectionMethod $reflectionMethod, $parametersList = false)

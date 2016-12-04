@@ -56,17 +56,39 @@ class Utils {
 
     public static function getReturnType(\ReflectionMethod $reflectionMethod)
     {
-        $docReturn = self::getDocAttribute($reflectionMethod, 'returns?');
-        if ($docReturn) {
-            preg_match('/(.*?)\s.*/', $docReturn . ' ', $matches);
-            return self::getRealType($matches[1], $reflectionMethod->getDeclaringClass()->getName());
-        }
-
         if ($reflectionMethod->getName() === 'serialize' || $reflectionMethod->getName() === '__toString') {
             return 'string';
         }
 
+        $docReturn = self::getDocAttribute($reflectionMethod, 'returns?');
+        if ($docReturn) {
+            preg_match('/(.*?)\s.*/', $docReturn . ' ', $matches);
+            $returnType = self::getRealType($matches[1], $reflectionMethod->getDeclaringClass()->getName());
+            if ($returnType) {
+                return $returnType;
+            }
+        }
+
+        if (method_exists($reflectionMethod, 'getReturnType') && $reflectionMethod->getReturnType()) {
+            return static::typeToString($reflectionMethod->getReturnType(), 'null|');
+        }
+
         return null;
+    }
+
+    public static function typeToString($type, $nullablePrefix = null) {
+        if (!$type) {
+            return '';
+        }
+
+        if ($nullablePrefix === null) {
+            $nullablePrefix = (version_compare(PHP_VERSION, '7.1') > -1) ? '?' : '';
+        }
+
+        preg_match('/^(\\??)(\\\\?)(.+)/', (string) $type, $matches);
+        $typeName = $matches[3];
+        $isInternal = in_array($typeName, explode(',', 'int,float,bool,string,callable,array,self,iterable'));
+        return ($type->allowsNull() ? $nullablePrefix : '') . ($isInternal ? '' : '\\') . $typeName;
     }
 
     public static function returnsArrayOrNull(\ReflectionMethod $reflectionMethod)

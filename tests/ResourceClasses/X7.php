@@ -37,9 +37,6 @@ class X7
         return $this->b;
     }
 
-    /**
-     * @return \ClassGenerator\tests\ResourceClasses\X7
-     */
     public function createAnotherX(): X7
     {
         return new self($this->getA() + 10, $this->getB() + 100);

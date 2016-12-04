@@ -43,9 +43,6 @@ class X71
         return $this->b;
     }
 
-    /**
-     * @return \ClassGenerator\tests\ResourceClasses\X71
-     */
     public function createAnotherX(): ?X71
     {
         return new self($this->getA() + 10, $this->getB() + 100);
