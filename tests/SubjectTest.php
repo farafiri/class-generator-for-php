@@ -9,6 +9,7 @@ class SubjectTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\SubjectX')
      *            ('ClassGenerator\tests\ResourceClasses\SubjectX7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\SubjectXVoid', 'minPhp' => '7.1')
      */
     public function testSubjectIsInstanceofSplSubject($testedClass)
     {

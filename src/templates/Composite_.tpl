@@ -243,8 +243,10 @@ if (interface_exists($baseClass)) {
             }
 
             $fn = ucfirst($fn);
+            if ($ret) {
+                echo "return \\ClassGenerator\\Utils\\AggregateFunctions::af$fn;\n";
+            }
         ?>
-        return \ClassGenerator\Utils\AggregateFunctions::af{{fn}};
     }
 
     {{\method}}

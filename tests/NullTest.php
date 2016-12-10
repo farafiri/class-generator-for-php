@@ -9,10 +9,11 @@ class NullTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\NullX')
      *            ('ClassGenerator\tests\ResourceClasses\NullXInterface')
+     *            ('ClassGenerator\tests\ResourceClasses\NullXVoid', 'minPhp' => '7.1')
      */
     public function testNull($testedClass)
     {
-        $this->assertTrue(class_exists('ClassGenerator\tests\ResourceClasses\NullX'));
+        $this->assertTrue(class_exists($testedClass));
         $nullObject = new $testedClass();
 
         $this->assertEquals(null, $nullObject->getA());

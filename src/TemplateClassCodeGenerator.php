@@ -37,6 +37,8 @@ class TemplateClassCodeGenerator
             $arrayParameters = $this->helper_getArrayParameters($reflectionMethod);
             $parametersList = $this->helper_getParameters($reflectionMethod, true);
             $returnType = $this->helper_getReturnTypeDefinition($reflectionMethod);
+            $returnVoid = $this->helper_getReturnVoid($reflectionMethod);
+            $ret = $returnVoid ? "" : "return ";
         ?>', $template);
 
         $template = str_replace('{{\method}}', '<?php } ?>', $template);
@@ -63,6 +65,10 @@ class TemplateClassCodeGenerator
         }
 
         return '';
+    }
+
+    public function helper_getReturnVoid(\ReflectionMethod $reflectionMethod) {
+        return Utils::typeToString($reflectionMethod) === 'void';
     }
 
     public function helper_getParametersDefinition(\ReflectionMethod $reflectionMethod)

@@ -195,7 +195,7 @@ if (interface_exists($baseClass)) {
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
-        return $this->cgDecorated->{{methodName}}({{parameters}});
+        {{ret}}$this->cgDecorated->{{methodName}}({{parameters}});
     }
 
 {{\method}}

@@ -35,7 +35,7 @@ class {{newClassName}} implements \{{generatorNamespace}}\Interfaces\Decorator, 
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
-        return $this->cgDecorated->{{methodName}}{{methodPostfix}}({{parameters}});
+        {{ret}}$this->cgDecorated->{{methodName}}{{methodPostfix}}({{parameters}});
     }
 
     {{\method}}

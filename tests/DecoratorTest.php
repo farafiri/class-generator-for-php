@@ -11,6 +11,7 @@ class DecoratorTest extends BaseTest
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
+     *            ('ClassGenerator\tests\ResourceClasses\DecoratorForXVoid', 'ClassGenerator\tests\ResourceClasses\XVoid', 'minPhp' => '7.1')
      */
     public function testDecorator($testedClass, $decoratedClass)
     {
@@ -31,6 +32,7 @@ class DecoratorTest extends BaseTest
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\XInterface', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
      *            ('ClassGenerator\tests\ResourceClasses\DecoratorForX71', 'ClassGenerator\tests\ResourceClasses\X71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
+     *            ('ClassGenerator\tests\ResourceClasses\DecoratorForXVoid', 'ClassGenerator\tests\ResourceClasses\XVoid', 'ClassGenerator\tests\ResourceClasses\XVoid', 'minPhp' => '7.1')
      */
     public function testDecoratorIsInstanceOfBase($testedClass, $parentClass, $decoratedClass)
     {
@@ -46,6 +48,7 @@ class DecoratorTest extends BaseTest
      *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXInterface', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
      *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForX71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
+     *            ('ClassGenerator\tests\ResourceClasses\BaseDecoratorForXVoid', 'ClassGenerator\tests\ResourceClasses\XVoid', 'minPhp' => '7.1')
      */
     public function testBaseDecorator($testedClass, $decoratedClass)
     {
@@ -243,6 +246,7 @@ class DecoratorTest extends BaseTest
      * @_testWith ('ClassGenerator\tests\ResourceClasses\X',  'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForX')
      *            ('ClassGenerator\tests\ResourceClasses\X7', 'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForX7', 'minPhp' => '7.0')
      *            ('ClassGenerator\tests\ResourceClasses\X71', 'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForX71', 'minPhp' => '7.1')
+     *            ('ClassGenerator\tests\ResourceClasses\XVoid', 'ClassGenerator\tests\ResourceClasses\MethodOverridedDecoratorForXVoid', 'minPhp' => '7.1')
      */
     public function testWithMethodOverriding($decoratedClass, $decoratorClass) {
         $decorated = new $decoratedClass(123, 234);

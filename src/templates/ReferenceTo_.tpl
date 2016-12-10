@@ -300,7 +300,7 @@ if (interface_exists($baseClass)) {
             throw new \ClassGenerator\Exceptions\Proxy("Attempt to call {{methodName}} on invalid reference");
         }
 
-        return $this->cgReferencedObject->{{methodName}}({{parameters}});
+        {{ret}}$this->cgReferencedObject->{{methodName}}({{parameters}});
     }
 
     {{\method}}

@@ -55,7 +55,7 @@ trait {{newClassName}}
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}(<?php echo isset($fixedParameters) ? $parametersDefinition : $defaultParamsList; ?>){{returnType}}
     {
-        return $this->{{prefix}}{{exposed}}('{{methodName}}', <?php
+        {{ret}} $this->{{prefix}}{{exposed}}('{{methodName}}', <?php
             if (isset($fixedParameters)) {
                 echo $arrayParameters;
             } else {

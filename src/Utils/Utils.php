@@ -77,6 +77,10 @@ class Utils {
     }
 
     public static function typeToString($type, $nullablePrefix = null) {
+        if ($type instanceof \ReflectionFunctionAbstract) {
+            $type = method_exists($type, 'getReturnType') ? $type->getReturnType() : null;
+        }
+
         if (!$type) {
             return '';
         }

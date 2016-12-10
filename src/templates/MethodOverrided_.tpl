@@ -41,10 +41,10 @@ if (interface_exists($baseClass)) {
         } elseif (isset($this->cgMethodOverridingClosures['*'])) {
             $closure = $this->cgMethodOverridingClosures['*'];
         } else {
-            return parent::{{methodName}}({{parameters}});
+            {{ret}}parent::{{methodName}}({{parameters}});
         }
 
-        return $closure({{parameters}});
+        {{ret}}$closure({{parameters}});
     }
 
     {{\method}}

@@ -89,7 +89,7 @@ if (interface_exists($baseClass)) {
     {
         $result = parent::{{methodName}}({{parameters}});
         $this->notify('{{methodName}}'<?php echo $parameters ? (', ' . $parameters) : ''; ?>);
-        return $result;
+        {{ret}}$result;
     }
 
     {{\method}}

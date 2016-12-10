@@ -46,6 +46,8 @@ if (interface_exists($baseClass)) {
                     echo "''";
                 } elseif (!$type) {
                     echo "null";
+                } elseif ($type === 'void') {
+                   //return;
                 } elseif (preg_match('/(^|\|)null($|\|)/', $type)) {
                     echo "null";
                 } elseif (preg_match('/((^|\|)(array|iterable)|\\[\\])($|\|)/', $type)) {

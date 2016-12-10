@@ -161,10 +161,10 @@ if (interface_exists($baseClass)) {
                     }
                 }
 
-                return $this->cgProxifiedObject->{{methodName}}({{parameters}});
+                {{ret}}$this->cgProxifiedObject->{{methodName}}({{parameters}});
             };
 
-            return $this->cgLazyProxyCreator->lazy($closure->bindTo($this, 'static'), $this->cgLazyProxySettings['{{methodName}}']['class'], $this->cgLazyProxySettings['{{methodName}}']['isLazyMethods']);
+            {{ret}}$this->cgLazyProxyCreator->lazy($closure->bindTo($this, 'static'), $this->cgLazyProxySettings['{{methodName}}']['class'], $this->cgLazyProxySettings['{{methodName}}']['isLazyMethods']);
         }
 
         if ($this->cgProxifiedObject === null) {
@@ -181,9 +181,9 @@ if (interface_exists($baseClass)) {
         }
 
         if ($this->cgLazyMethods && $this->cgLazyProxySettings['{{methodName}}']['isLazyMethods']) {
-            return $this->cgLazyProxyCreator->lazyMethods($this->cgProxifiedObject->{{methodName}}({{parameters}}));
+            {{ret}}$this->cgLazyProxyCreator->lazyMethods($this->cgProxifiedObject->{{methodName}}({{parameters}}));
         } else {
-            return $this->cgProxifiedObject->{{methodName}}({{parameters}});
+            {{ret}}$this->cgProxifiedObject->{{methodName}}({{parameters}});
         }
     }
 

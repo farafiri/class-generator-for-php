@@ -79,7 +79,7 @@ class {{newClassName}} extends <?php echo '\\' . $generator->getGeneratorAggrega
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
-        return $this->cgDecorated->{{methodName}}({{parameters}});
+        {{ret}}$this->cgDecorated->{{methodName}}({{parameters}});
     }
 
 {{\method}}

@@ -18,12 +18,12 @@ class {{newClassName}} extends \{{baseClass}} implements \{{generatorNamespace}}
 
     function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
-        return $this->cgThis->{{methodName}}({{parameters}});
+        {{ret}}$this->cgThis->{{methodName}}({{parameters}});
     }
 
     function {{methodName}}{{methodPostfix}}({{parametersDefinition}}){{returnType}}
     {
-        return parent::{{methodName}}({{parameters}});
+        {{ret}}parent::{{methodName}}({{parameters}});
     }
 
     {{\method}}

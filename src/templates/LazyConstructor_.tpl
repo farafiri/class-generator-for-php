@@ -59,7 +59,7 @@ if ($parametersDefinition === null) {
             call_user_func_array(array($this, '__construct'), $this->cgConstructorParams);
         }
 
-        return parent::{{methodName}}({{parameters}});
+        {{ret}}parent::{{methodName}}({{parameters}});
     }
 
 {{\method}}

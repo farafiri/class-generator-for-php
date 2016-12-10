@@ -9,12 +9,14 @@ class CompositeTest extends BaseTest
      * @dataProvider withProvider
      * @_testWith ('ClassGenerator\tests\ResourceClasses\CompositeX', 'ClassGenerator\tests\ResourceClasses\X')
      *            ('ClassGenerator\tests\ResourceClasses\CompositeXInterface', 'ClassGenerator\tests\ResourceClasses\X')
-     *            ('ClassGenerator\tests\ResourceClasses\CompositeX7', 'ClassGenerator\tests\ResourceClasses\X7s', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\CompositeX7', 'ClassGenerator\tests\ResourceClasses\X7', 'minPhp' => '7.0')
+     *            ('ClassGenerator\tests\ResourceClasses\CompositeX71', 'ClassGenerator\tests\ResourceClasses\X71', 'minPhp' => '7.1')
+     *            ('ClassGenerator\tests\ResourceClasses\CompositeXVoid', 'ClassGenerator\tests\ResourceClasses\XVoid', 'minPhp' => '7.1')
      */
-    public function testComposite($testedClass)
+    public function testComposite($testedClass, $itemClass)
     {
-        $x1 = new ResourceClasses\X();
-        $x2 = new ResourceClasses\X();
+        $x1 = new $itemClass();
+        $x2 = new $itemClass();
 
         $composite = new $testedClass(array($x1, $x2));
         $composite->setA(100);

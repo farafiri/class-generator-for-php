@@ -16,7 +16,7 @@ trait {{newClassName}}
     {{$reflectionMethod->getDocComment() . "\n"}}
     function {{methodName}}({{parametersDefinition}}){{returnType}}
     {
-        return $this->{{exposedGetter}}()->{{methodName}}({{parameters}});
+        {{ret}}$this->{{exposedGetter}}()->{{methodName}}({{parameters}});
     }
 
 {{\method}}
