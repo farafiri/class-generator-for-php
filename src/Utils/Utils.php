@@ -91,7 +91,7 @@ class Utils {
 
         preg_match('/^(\\??)(\\\\?)(.+)/', (string) $type, $matches);
         $typeName = $matches[3];
-        $isInternal = in_array($typeName, explode(',', 'int,float,bool,string,callable,array,self,iterable'));
+        $isInternal = in_array($typeName, explode(',', 'int,float,bool,string,callable,array,self,iterable,void'));
         return ($type->allowsNull() ? $nullablePrefix : '') . ($isInternal ? '' : '\\') . $typeName;
     }
 
