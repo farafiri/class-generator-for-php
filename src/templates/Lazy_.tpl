@@ -161,10 +161,10 @@ if (interface_exists($baseClass)) {
                     }
                 }
 
-                {{ret}}$this->cgProxifiedObject->{{methodName}}({{parameters}});
+                {{ret}}$this->cgProxifiedObject->{{methodName}}({{parameters}});<?php echo $ret ? '':'return;'; ?>
             };
 
-            {{ret}}$this->cgLazyProxyCreator->lazy($closure->bindTo($this, 'static'), $this->cgLazyProxySettings['{{methodName}}']['class'], $this->cgLazyProxySettings['{{methodName}}']['isLazyMethods']);
+            {{ret}}$this->cgLazyProxyCreator->lazy($closure->bindTo($this, 'static'), $this->cgLazyProxySettings['{{methodName}}']['class'], $this->cgLazyProxySettings['{{methodName}}']['isLazyMethods']);<?php echo $ret ? '':'return;'; ?>
         }
 
         if ($this->cgProxifiedObject === null) {
