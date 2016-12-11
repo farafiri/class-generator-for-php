@@ -16,6 +16,9 @@ class ExposeTraitTest extends BaseTest {
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\MethodTemplateName', true)
      *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitInterfaceTester', false)
      *           ('ClassGenerator\tests\ResourceClasses\CExposeTraitTester\InterfaceTester', false)
+     *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitTester7', true, 'minPhp' => '7.0')
+     *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitTester71', true, 'minPhp' => '7.1')
+     *           ('ClassGenerator\tests\ResourceClasses\ExposeTraitTesterVoid', true, 'minPhp' => '7.1')
      */
     public function testBaseClass($testedClass, $haveDummyMethod) {
         $exposedObject = new ResourceClasses\X(101, 102);
